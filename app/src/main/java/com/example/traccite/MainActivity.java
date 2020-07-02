@@ -9,56 +9,47 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-import com.firebase.ui.auth.AuthUI;
-
-import java.util.Arrays;
-import java.util.List;
-
 public class MainActivity extends AppCompatActivity {
-    EditText Name, Phone;
-    Button Confirm;
+  EditText Name, Phone;
+  Button Confirm;
 
-    List<AuthUI.IdpConfig> providers = Arrays.asList(
-            new AuthUI.IdpConfig.PhoneBuilder().build()
-    );
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_main);
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+    // Adding items into Spinner(Combo Box)
+    String[] arraySpinner = new String[]{
+      "Resident", "Non-Resident"
+    };
+    final Spinner s = findViewById(R.id.spinner);
+    ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+      android.R.layout.simple_spinner_item, arraySpinner);
+    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+    s.setAdapter(adapter);
 
-        // Adding items into Spinner(Combo Box)
-        String[] arraySpinner = new String[]{
-                "Resident", "Non-Resident"
-        };
-        final Spinner s = findViewById(R.id.spinner);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, arraySpinner);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        s.setAdapter(adapter);
+    Name = findViewById(R.id.edittxtName);
+    Phone = findViewById(R.id.editTxtPhone);
+    Confirm = findViewById(R.id.btnComfirm);
 
-        Name = findViewById(R.id.edittxtName);
-        Phone = findViewById(R.id.editTxtPhone);
-        Confirm = findViewById(R.id.btnComfirm);
+    // Will run the commands when "Confirm" Button is pressed
+    Confirm.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        // get Resident/Non-Resident- can put not selected as default
+        s.getCount();
+        // get name
+        Name.getText();
+        // get number- check if number is 8 digits long
+        Phone.getText();
+        if (Phone.length() == 8) {
+          Phone.getText();
+        } else {
+          Phone.setText("");
+          Phone.setHint("Invalid Number!");
+        }
 
-        // Will run the commands when "Confirm" Button is pressed
-        Confirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // get Resident/Non-Resident- can put not selected as default
-                s.getCount();
-                // get name
-                Name.getText();
-                // get number- check if number is 8 digits long
-                Phone.getText();
-                if(Phone.length() == 8){
-                    Phone.getText();
-                }else{
-                    Phone.setText("");
-                    Phone.setHint("Invalid Number!");
-                }
-
-            }
-        });
-    }
+      }
+    });
+  }
 }
