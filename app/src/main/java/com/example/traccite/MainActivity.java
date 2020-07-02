@@ -13,6 +13,7 @@ public class MainActivity extends AppCompatActivity {
     EditText Name, Phone;
     Button Comfirm;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,17 +36,17 @@ public class MainActivity extends AppCompatActivity {
         Comfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // get Resident/Non-Resident- can put not selected as default
-                s.getCount();
-                // get name
-                Name.getText();
-                // get number- check if number is 8 digits long
-                Phone.getText();
-                if(Phone.length() == 8){
+                if(Phone.length() == 8 || Name.length() != 0){
+                    // get Resident/Non-Resident- can put not selected as default
+                    s.getCount();
+                    // get name
+                    Name.getText();
+                    // get number- check if number is 8 digits long
                     Phone.getText();
                 }else{
                     Phone.setText("");
                     Phone.setHint("Invalid Number!");
+
                 }
 
             }
