@@ -2,6 +2,11 @@ package com.example.traccite;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.bluetooth.BluetoothAdapter;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -9,15 +14,32 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+
 public class MainActivity extends AppCompatActivity {
     EditText Name, Phone;
     Button Comfirm;
+    int REQUEST_ENABLE_BT = 0;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        // Get permissions
+        BluetoothAdapter BluetoothAdapter = android.bluetooth.BluetoothAdapter.getDefaultAdapter();
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        if(BluetoothAdapter == null){
+            // Phone does not support bluetooth
+            alertDialogBuilder.setMessage("Your Phone does not support bluetooth!");
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+        }else {
+            if (!BluetoothAdapter.isEnabled()) {
+                Intent itEnableBluetooth = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                startActivityForResult(itEnableBluetooth, REQUEST_ENABLE_BT);
+            }
+        }
+
         // Adding items into Spinner(Combo Box)
         String[] arraySpinner = new String[]{
                 "Resident", "Non-Resident"
@@ -36,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         Comfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(Phone.length() == 8 || Name.length() != 0){
+                if(Phone.length() == 8 && Name.length() != 0){
                     // get Resident/Non-Resident- can put not selected as default
                     s.getCount();
                     // get name
