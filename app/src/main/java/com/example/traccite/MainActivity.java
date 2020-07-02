@@ -11,7 +11,7 @@ import android.widget.Spinner;
 
 public class MainActivity extends AppCompatActivity {
     EditText Name, Phone;
-    Button Comfirm;
+    Button Confirm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,10 +29,10 @@ public class MainActivity extends AppCompatActivity {
 
         Name = findViewById(R.id.edittxtName);
         Phone = findViewById(R.id.editTxtPhone);
-        Comfirm = findViewById(R.id.btnComfirm);
+        Confirm = findViewById(R.id.btnComfirm);
 
         // Will run the commands when "Comfirm" Button is pressed
-        Comfirm.setOnClickListener(new View.OnClickListener() {
+        Confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // get Resident/Non-Resident- can put not selected as default
