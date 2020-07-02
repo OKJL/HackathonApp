@@ -9,19 +9,29 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.firebase.ui.auth.AuthUI;
+
+import java.util.Arrays;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
     EditText Name, Phone;
     Button Confirm;
+
+    List<AuthUI.IdpConfig> providers = Arrays.asList(
+            new AuthUI.IdpConfig.PhoneBuilder().build()
+    );
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         // Adding items into Spinner(Combo Box)
         String[] arraySpinner = new String[]{
                 "Resident", "Non-Resident"
         };
-        final Spinner s = (Spinner) findViewById(R.id.spinner);
+        final Spinner s = findViewById(R.id.spinner);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, arraySpinner);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -31,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         Phone = findViewById(R.id.editTxtPhone);
         Confirm = findViewById(R.id.btnComfirm);
 
-        // Will run the commands when "Comfirm" Button is pressed
+        // Will run the commands when "Confirm" Button is pressed
         Confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
