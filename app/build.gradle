@@ -29,6 +29,11 @@ dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
 
     /*
+     * Android Implementations
+     */
+    implementation 'com.google.android.gms:play-services-auth'
+
+    /*
      * AndroidX Implementations
      */
     implementation 'androidx.appcompat:appcompat:1.1.0'
