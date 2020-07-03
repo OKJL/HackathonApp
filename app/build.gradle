@@ -12,6 +12,8 @@ android {
         versionCode 1
         versionName "1.0"
 
+        resConfigs "en"
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -44,10 +46,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-inappmessaging-display'
 
     /*
-     * Testing
+     * JUnit Testing Suite
      */
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-
 }
