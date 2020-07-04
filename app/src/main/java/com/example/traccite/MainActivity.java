@@ -12,6 +12,10 @@ import android.widget.Spinner;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.firebase.ui.auth.AuthUI;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 
 public class MainActivity extends AppCompatActivity {
   EditText Name, Phone;
@@ -21,15 +25,17 @@ public class MainActivity extends AppCompatActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+
+    AuthUI.getInstance().signOut(this);
+
+    FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+    if (currentUser == null) {
+      startActivity(AuthActivity.createIntent(this));
+      finish();
+      return;
+    }
+
     setContentView(R.layout.activity_main);
-
-    Intent intent = new Intent().setClass(
-      MainActivity.this,
-      AuthActivity.class
-    );
-
-    startActivity(intent);
-    finish();
 
     // Get permissions
     BluetoothAdapter BluetoothAdapter = android.bluetooth.BluetoothAdapter.getDefaultAdapter();
@@ -41,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
       alertDialog.show();
     } else {
       if (!BluetoothAdapter.isEnabled()) {
-        Intent itEnableBluetooth = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+        Intent itEnableBluetooth = new Intent(android.bluetooth.BluetoothAdapter.ACTION_REQUEST_ENABLE);
         startActivityForResult(itEnableBluetooth, REQUEST_ENABLE_BT);
       }
     }
@@ -50,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
     String[] arraySpinner = new String[]{
       "Resident", "Non-Resident"
     };
-    final Spinner s = (Spinner) findViewById(R.id.spinner);
+    final Spinner s = findViewById(R.id.spinner);
     ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
       android.R.layout.simple_spinner_item, arraySpinner);
     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

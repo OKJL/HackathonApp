@@ -1,9 +1,12 @@
 package com.example.traccite;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -27,6 +30,11 @@ public class AuthActivity extends AppCompatActivity {
   // Firebase: Privacy Policy & Terms Of Service
   private static final String TOS_URL = "https://google.com";
   private static final String PRIVACY_POLICY_URL = "https://ite.edu.sg";
+
+  @NonNull
+  public static Intent createIntent(@NonNull Context context) {
+    return new Intent(context, AuthActivity.class);
+  }
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
