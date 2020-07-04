@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,6 +33,9 @@ public class AuthActivity extends AppCompatActivity {
   private static final String TOS_URL = "https://google.com";
   private static final String PRIVACY_POLICY_URL = "https://ite.edu.sg";
 
+  private Button btnContinue;
+  private EditText txtContactNumber;
+
   @NonNull
   public static Intent createIntent(@NonNull Context context) {
     return new Intent(context, AuthActivity.class);
@@ -41,8 +46,20 @@ public class AuthActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_auth);
 
+    btnContinue = findViewById(R.id.continue_button);
+    txtContactNumber = findViewById(R.id.contact_number);
+
     // Show the login options
     createSignInIntent();
+
+    btnContinue.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        startActivity(HomeActivity.createIntent(AuthActivity.this));
+        finish();
+        return;
+      }
+    });
   }
 
   @Override
@@ -53,6 +70,7 @@ public class AuthActivity extends AppCompatActivity {
       IdpResponse response = IdpResponse.fromResultIntent(data);
 
       if (resultCode == RESULT_OK) {
+        txtContactNumber.setText(response.getPhoneNumber());
         Log.d(TAG, "Successfully signed in as: " + response.getPhoneNumber());
       } else {
         Log.d(TAG, "Unable to sign in");
