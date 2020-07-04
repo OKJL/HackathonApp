@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1048621489000",
+    "firebase_url": "https://oklj-covid19.firebaseio.com",
+    "project_id": "oklj-covid19",
+    "storage_bucket": "oklj-covid19.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1048621489000:android:9ff0bac6d5706ad59914dd",
+        "android_client_info": {
+          "package_name": "com.example.traccite"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1048621489000-bva2epkhhi55f78t9psm28mbg1mgfin2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.traccite",
+            "certificate_hash": "fe7265775138181ad7dae3491e04c84f31f4d7d0"
+          }
+        },
+        {
+          "client_id": "1048621489000-mrldqp9jfjlfqm6lgashhh8kjh0iv58g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA5NrjM25SIVbuPJfGc2wwcjpedQWozoGQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1048621489000-mrldqp9jfjlfqm6lgashhh8kjh0iv58g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
