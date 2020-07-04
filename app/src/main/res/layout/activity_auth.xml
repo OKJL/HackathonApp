@@ -92,6 +92,7 @@
     android:layout_width="380dp"
     android:layout_height="wrap_content"
     android:layout_marginTop="8dp"
+    android:checked="true"
     android:text="I am a resident of Singapore"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
