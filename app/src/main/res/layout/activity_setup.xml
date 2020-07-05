@@ -5,16 +5,16 @@
   android:layout_height="match_parent"
   android:background="@color/gray200"
   android:orientation="vertical"
-  android:scrollbarThumbVertical="@null"
-  android:scrollbarThumbHorizontal="@null"
   android:overScrollMode="never"
+  android:scrollbarThumbHorizontal="@null"
+  android:scrollbarThumbVertical="@null"
   tools:context=".SetupActivity">
 
   <LinearLayout
-    android:padding="10dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="10dp">
 
     <LinearLayout
       android:layout_width="match_parent"
@@ -59,28 +59,55 @@
       android:paddingLeft="10dp"
       android:paddingRight="10dp">
 
+      <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:fontFamily="@font/montserrat_medium"
+        android:text="NRIC/FIN Number"
+        android:textSize="15dp" />
+
       <EditText
+        android:id="@+id/nric_number"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="15dp"
         android:background="@color/gray300"
-        android:hint="NRIC Number"
+        android:hint="Enter Details..."
         android:inputType="textNoSuggestions"
         android:maxLength="9"
         android:padding="10dp"
         android:textColor="@color/black" />
 
+      <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:fontFamily="@font/montserrat_medium"
+        android:text="Full Name"
+        android:textSize="15dp" />
+
       <EditText
+        android:id="@+id/full_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="15dp"
         android:background="@color/gray300"
-        android:hint="Full Name"
+        android:hint="Enter Details..."
         android:inputType="textNoSuggestions"
         android:padding="10dp"
         android:textColor="@color/black" />
 
+      <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:fontFamily="@font/montserrat_medium"
+        android:text="Contact Number"
+        android:textSize="15dp" />
+
       <EditText
+        android:id="@+id/contact_number"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="15dp"
@@ -92,10 +119,11 @@
         android:textColor="@color/black" />
 
       <Switch
+        android:id="@+id/resident_of_singapore"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:checked="true"
-        android:fontFamily="@font/montserrat_light"
+        android:fontFamily="@font/montserrat_regular"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:text="I am a resident of Singapore" />
@@ -110,6 +138,7 @@
       android:paddingRight="10dp">
 
       <Button
+        android:id="@+id/continue_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/black"

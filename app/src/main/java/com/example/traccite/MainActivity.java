@@ -22,10 +22,6 @@ public class MainActivity extends AppCompatActivity {
   // Logcat: Logging Tag
   private static final String TAG = "MainActivity";
 
-  // SharedPreferences: Store & Key Identifier
-  private static final String PREFERENCES_STORE = "SETUP";
-  private static final String SETUP_STATUS = "SETUP_STATUS";
-
   // Firebase: Arbitrary Request Code
   private static final int RC_SIGN_IN = 1422;
 
@@ -41,16 +37,19 @@ public class MainActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
+    FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+    SharedPreferences preferences = getApplicationContext().
+      getSharedPreferences(AppTraCCite.PREF_SETUP, MODE_PRIVATE);
+
     // TODO: Remove in production.
     AuthUI.getInstance().signOut(this);
 
-    FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
     if (currentUser == null) {
       createSignInIntent();
       return;
     }
 
-    if (!getSetupComplete()) {
+    if (!preferences.getBoolean(AppTraCCite.SETUP_KEY, false)) {
       startActivity(SetupActivity.createIntent(this));
       finish();
       return;
@@ -75,13 +74,6 @@ public class MainActivity extends AppCompatActivity {
         Log.i(TAG, "Unable to sign in");
       }
     }
-  }
-
-  public boolean getSetupComplete() {
-    final SharedPreferences preferences =
-      getSharedPreferences(PREFERENCES_STORE, MODE_PRIVATE);
-
-    return preferences.getBoolean(SETUP_STATUS, false);
   }
 
   public void createSignInIntent() {
