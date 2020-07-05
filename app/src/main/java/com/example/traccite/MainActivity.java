@@ -1,6 +1,7 @@
 package com.example.traccite;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -20,6 +21,10 @@ public class MainActivity extends AppCompatActivity {
 
   // Logcat: Logging Tag
   private static final String TAG = "MainActivity";
+
+  // SharedPreferences: Store & Key Identifier
+  private static final String PREFERENCES_STORE = "SETUP";
+  private static final String SETUP_STATUS = "SETUP_STATUS";
 
   // Firebase: Arbitrary Request Code
   private static final int RC_SIGN_IN = 1422;
@@ -45,6 +50,12 @@ public class MainActivity extends AppCompatActivity {
       return;
     }
 
+    if (!getSetupComplete()) {
+      startActivity(SetupActivity.createIntent(this));
+      finish();
+      return;
+    }
+
     startActivity(HomeActivity.createIntent(this));
     finish();
   }
@@ -64,6 +75,13 @@ public class MainActivity extends AppCompatActivity {
         Log.i(TAG, "Unable to sign in");
       }
     }
+  }
+
+  public boolean getSetupComplete() {
+    final SharedPreferences preferences =
+      getSharedPreferences(PREFERENCES_STORE, MODE_PRIVATE);
+
+    return preferences.getBoolean(SETUP_STATUS, false);
   }
 
   public void createSignInIntent() {
