@@ -13,7 +13,7 @@
     android:roundIcon="@mipmap/ic_launcher_round"
     android:supportsRtl="true"
     android:theme="@style/AppTheme">
-    <activity android:name=".SetupActivity"></activity>
+    <activity android:name=".SetupActivity" />
     <activity android:name=".HomeActivity" />
     <activity android:name=".MainActivity">
       <intent-filter>
@@ -22,6 +22,14 @@
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </activity>
+
+    <service
+      android:name=".services.FCMService"
+      android:exported="false">
+      <intent-filter>
+        <action android:name="com.google.firebase.MESSAGING_EVENT" />
+      </intent-filter>
+    </service>
   </application>
 
 </manifest>

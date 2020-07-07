@@ -13,6 +13,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.traccite.models.User;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -20,20 +21,17 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class SetupActivity extends AppCompatActivity {
 
   // Logcat: Logging Tag
   private static final String TAG = "SetupActivity";
 
   // Android: Fields From Layout
-  private EditText nric_number;
-  private EditText full_name;
-  private EditText contact_number;
-  private Switch resident_of_singapore;
-  private Button continue_button;
+  private EditText mNricFin;
+  private EditText mFullName;
+  private EditText mContactNumber;
+  private Switch mResidentOfSingapore;
+  private Button mContinue;
 
   @NonNull
   public static Intent createIntent(@NonNull Context context) {
@@ -64,11 +62,11 @@ public class SetupActivity extends AppCompatActivity {
     editor.apply();
 
     // Android: Linking variables to layout ids
-    nric_number = findViewById(R.id.nric_number);
-    full_name = findViewById(R.id.full_name);
-    contact_number = findViewById(R.id.contact_number);
-    resident_of_singapore = findViewById(R.id.resident_of_singapore);
-    continue_button = findViewById(R.id.continue_button);
+    mNricFin = findViewById(R.id.nric_number);
+    mFullName = findViewById(R.id.full_name);
+    mContactNumber = findViewById(R.id.contact_number);
+    mResidentOfSingapore = findViewById(R.id.resident_of_singapore);
+    mContinue = findViewById(R.id.continue_button);
 
     /*
      * Firebase: Checks if the current user has a
@@ -79,52 +77,47 @@ public class SetupActivity extends AppCompatActivity {
      * in the layout and disable any inputs from it.
      */
     if (!user.getPhoneNumber().isEmpty()) {
-      contact_number.setText(user.getPhoneNumber());
-      contact_number.setEnabled(false);
+      mContactNumber.setText(user.getPhoneNumber());
+      mContactNumber.setEnabled(false);
     }
 
     // Android: Attach an onClick event listener
-    continue_button.setOnClickListener(new View.OnClickListener() {
+    mContinue.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        Map<String, Object> user_data = new HashMap<>();
-
-        if (nric_number.getText().toString().isEmpty()) {
+        if (mNricFin.getText().toString().isEmpty()) {
           showToast("NRIC Number is invalid!");
           return;
         }
 
-        if (nric_number.getText().length() != 9) {
+        if (mNricFin.getText().length() != 9) {
           showToast("NRIC Number is invalid!");
           return;
         }
 
-        if (!NRICManager.checkNRICForValidity(nric_number.getText().toString())) {
+        if (!NRICManager.checkNRICForValidity(mNricFin.getText().toString())) {
           showToast("NRIC Number is invalid!");
           return;
         }
 
-        if (full_name.getText().toString().isEmpty()) {
+        if (mFullName.getText().toString().isEmpty()) {
           showToast("Full Name is empty!");
           return;
         }
 
-        if (contact_number.getText().toString().isEmpty()) {
+        if (mContactNumber.getText().toString().isEmpty()) {
           showToast("Contact Number is empty!");
           return;
         }
 
-        user_data.put("UID", user.getUid());
-        user_data.put("NRIC/FIN No.", nric_number.getText().toString());
-        user_data.put("Full Name", full_name.getText().toString());
-        user_data.put(
-          "Contact Number",
-          Integer.parseInt(contact_number.getText().toString())
-        );
-        user_data.put(
-          "Resident Of Singapore",
-          resident_of_singapore.isChecked()
-        );
+        User user_data = new User(
+          user.getUid(),
+          mNricFin.getText().toString(),
+          mFullName.getText().toString(),
+          null,
+          mContactNumber.getText().toString(),
+          mResidentOfSingapore.isChecked()
+          );
 
         db.collection("users")
           .document(user.getUid())

@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     // TODO: Remove in production.
     AuthUI.getInstance().signOut(this);
 
+
     if (currentUser == null) {
       createSignInIntent();
       return;
