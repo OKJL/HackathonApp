@@ -1,15 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#6200EE</color>
-    <color name="colorPrimaryDark">#3700B3</color>
-    <color name="colorAccent">#03DAC5</color>
-    <color name="dark_blue">#3023AE</color>
-    <color name="purple">#c86dd7</color>
-    <color name="sky_blue">#00bfff</color>
-    <color name="light_orange">#FFA500</color>
-    <color name="dark_orange">#FF8C00</color>
+  <color name="colorPrimary">@color/white</color>
+  <color name="colorPrimaryDark">@color/black</color>
+  <color name="colorAccent">@color/blue</color>
 
-    <color name="login_form_details">#ccffffff</color>
-    <color name="login_form_details_light">#1affffff</color>
-    <color name="login_form_details_medium">#66ffffff</color>
+  <!-- Grayscale Colors -->
+  <color name="white">#ffffff</color>
+  <color name="black">#000000</color>
+  <color name="gray100">#f1f2f6</color>
+  <color name="gray200">#dfe4ea</color>
+  <color name="gray300">#ced6e0</color>
+  <color name="gray400">#a4b0be</color>
+  <color name="gray500">#747d8c</color>
+  <color name="gray600">#57606f</color>
+  <color name="gray700">#2f3542</color>
+
+  <color name="yellow">#eccc68</color>
+  <color name="orange">#ffa502</color>
+  <color name="teal">#7bed9f</color>
+  <color name="green">#2ed573</color>
+  <color name="blue">#1e90ff</color>
+  <color name="pink">#ff6b81</color>
+  <color name="red">#ff4757</color>
+  <color name="purple">#5352ed</color>
+  <color name="indigo">#3742fa</color>
 </resources>
