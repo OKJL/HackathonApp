@@ -5,13 +5,19 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import java.util.Arrays;
 import java.util.List;
@@ -39,18 +45,17 @@ public class MainActivity extends AppCompatActivity {
 
     FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
     SharedPreferences preferences = getApplicationContext().
-      getSharedPreferences(AppTraCCite.PREF_SETUP, MODE_PRIVATE);
+      getSharedPreferences(AppTraCCite.GLOBAL_PREFS, MODE_PRIVATE);
 
     // TODO: Remove in production.
     AuthUI.getInstance().signOut(this);
-
 
     if (currentUser == null) {
       createSignInIntent();
       return;
     }
 
-    if (!preferences.getBoolean(AppTraCCite.SETUP_KEY, false)) {
+    if (!preferences.getBoolean(AppTraCCite.SETUP_COMPLETED_KEY, false)) {
       startActivity(SetupActivity.createIntent(this));
       finish();
       return;

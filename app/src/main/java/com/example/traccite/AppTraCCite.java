@@ -9,12 +9,13 @@ public class AppTraCCite extends Application {
   /*
    * SharedPreferences: Preference Names
    */
-  public static final String PREF_SETUP = "SETUP_PREFERENCES";
+  public static final String GLOBAL_PREFS = "_";
 
   /*
    * SharedPreferences: Key-Value Pairs
    */
-  public static final String SETUP_KEY = "SETUP_COMPLETED";
+  public static final String FCM_TOKEN_KEY = "FCM_TOKEN_ID";
+  public static final String SETUP_COMPLETED_KEY = "SETUP_COMPLETED";
 
   /*
    * Logcat: Logging Tag
