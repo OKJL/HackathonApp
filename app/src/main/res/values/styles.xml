@@ -1,10 +1,42 @@
 <resources>
   <!-- Base application theme. -->
-  <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
-    <!-- Customize your theme here. -->
-    <item name="colorPrimary">@color/colorPrimary</item>
+  <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <!-- Colors -->
+    <item name="colorPrimary">#6200EE</item>
     <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
     <item name="colorAccent">@color/colorAccent</item>
+
+    <!-- Fonts -->
+    <item name="fontFamily">@font/montserrat_regular</item>
+
+    <!-- General Styles -->
+    <item name="background">@color/gray100</item>
+    <item name="android:scrollbarThumbVertical">@null</item>
+    <item name="android:scrollbarThumbHorizontal">@null</item>
+  </style>
+
+  <!--  Page Header Styles -->
+  <style name="AppTheme.HeaderStyle">
+    <item name="android:textSize">25dp</item>
+    <item name="android:textStyle">bold</item>
+    <item name="android:textColor">@color/gray700</item>
+  </style>
+
+  <style name="AppTheme.SubHeaderStyle">
+    <item name="android:textSize">15dp</item>
+    <item name="android:textStyle">normal</item>
+    <item name="android:textColor">@color/gray500</item>
+  </style>
+
+  <!--  Material Theme -->
+  <style name="Widget.AppTheme.TextInputLayout.OutlinedBox" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+    <item name="endIconMode">clear_text</item>
+    <item name="errorEnabled">true</item>
+    <item name="hintTextColor">@color/blue</item>
+    <item name="errorTextColor">@color/red</item>
+    <item name="boxStrokeColor">@color/blue</item>
+    <item name="colorControlActivated">@color/blue</item>
+    <item name="android:layout_marginBottom">10dp</item>
   </style>
 
   <!-- Remove when we no longer need FirebaseUI -->

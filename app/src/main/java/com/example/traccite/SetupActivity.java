@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.Toast;
 
@@ -20,6 +19,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -47,9 +47,9 @@ public class SetupActivity extends AppCompatActivity {
   /*
    * Android: Fields From Layout
    */
-  private EditText mNricFin;
-  private EditText mFullName;
-  private EditText mContactNumber;
+  private TextInputLayout mNricFin;
+  private TextInputLayout mFullName;
+  private TextInputLayout mContactNumber;
   private Switch mResidentOfSingapore;
   private Button mContinue;
 
@@ -74,37 +74,43 @@ public class SetupActivity extends AppCompatActivity {
     mContinue.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        if (mNricFin.getText().toString().isEmpty()) {
-          showToast("NRIC Number is invalid!");
+        if (mNricFin.getEditText().getText().toString().isEmpty()) {
+          mNricFin.setError("NRIC/FIN is empty!");
           return;
         }
 
-        if (mNricFin.getText().length() != 9) {
-          showToast("NRIC Number is invalid!");
+        if (mNricFin.getEditText().getText().length() != 9) {
+          mNricFin.setError("NRIC/FIN is invalid!");
           return;
         }
 
-        if (!NRICManager.checkNRICForValidity(mNricFin.getText().toString())) {
-          showToast("NRIC Number is invalid!");
+        if (!NRICManager.checkNRICForValidity(mNricFin.getEditText().getText().toString().toUpperCase())) {
+          mNricFin.setError("NRIC/FIN is invalid!");
           return;
         }
 
-        if (mFullName.getText().toString().isEmpty()) {
-          showToast("Full Name is empty!");
+        mNricFin.setError(null);
+
+        if (mFullName.getEditText().getText().toString().isEmpty()) {
+          mFullName.setError("Full Name is empty!");
           return;
         }
 
-        if (mContactNumber.getText().toString().isEmpty()) {
-          showToast("Contact Number is empty!");
+        mFullName.setError(null);
+
+        if (mContactNumber.getEditText().getText().toString().isEmpty()) {
+          mContactNumber.setError("Contact Number is empty!");
           return;
         }
+
+        mContactNumber.setError(null);
 
         User user = new User(
           mUser.getUid(),
-          mNricFin.getText().toString(),
-          mFullName.getText().toString(),
+          mNricFin.getEditText().getText().toString(),
+          mFullName.getEditText().getText().toString(),
           FCMService.getToken(SetupActivity.this),
-          mContactNumber.getText().toString(),
+          mContactNumber.getEditText().getText().toString(),
           mResidentOfSingapore.isChecked()
         );
 
@@ -168,7 +174,7 @@ public class SetupActivity extends AppCompatActivity {
      * in the layout and disable any inputs from it.
      */
     if (!mUser.getPhoneNumber().isEmpty()) {
-      mContactNumber.setText(mUser.getPhoneNumber());
+      mContactNumber.getEditText().setText(mUser.getPhoneNumber());
       mContactNumber.setEnabled(false);
     }
 
@@ -192,7 +198,7 @@ public class SetupActivity extends AppCompatActivity {
 
           getSharedPreferences(AppTraCCite.GLOBAL_PREFS, MODE_PRIVATE)
             .edit()
-            .putString(task.getResult().getToken(), null)
+            .putString(AppTraCCite.FCM_TOKEN_KEY, task.getResult().getToken())
             .apply();
         }
       });
