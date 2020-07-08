@@ -130,9 +130,9 @@ public class SetupActivity extends AppCompatActivity {
           mUser.getUid(),
           mNricFin.getEditText().getText().toString(),
           mFullName.getEditText().getText().toString(),
-          FieldValue.arrayUnion(FCMService.getToken(SetupActivity.this)),
           mContactNumber.getEditText().getText().toString(),
-          mResidentOfSingapore.isChecked() ? "Singapore" : null
+          mResidentOfSingapore.isChecked() ? "Singapore" : null,
+          FieldValue.arrayUnion(FCMService.getToken(SetupActivity.this))
         );
 
         /*

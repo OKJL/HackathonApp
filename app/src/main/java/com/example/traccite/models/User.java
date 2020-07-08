@@ -4,24 +4,24 @@ import com.google.firebase.firestore.FieldValue;
 
 public class User {
   private String uid;
-  private String nric_fin;
+  private String nric_fin_ppn;
   private String full_name;
   private String country_code;
-  private FieldValue fcm_tokens;
   private String contact_number;
+  private FieldValue fcm_tokens;
   private FieldValue updatedAt;
   private FieldValue createdAt;
 
   public User(
     String uid,
-    String nric_fin,
+    String nric_fin_ppn,
     String full_name,
-    FieldValue fcm_tokens,
     String contact_number,
-    String country_code
+    String country_code,
+    FieldValue fcm_tokens
   ) {
     this.uid = uid;
-    this.nric_fin = nric_fin;
+    this.nric_fin_ppn = nric_fin_ppn;
     this.full_name = full_name;
     this.fcm_tokens = fcm_tokens;
     this.contact_number = contact_number;
@@ -30,16 +30,16 @@ public class User {
 
   public User(
     String uid,
-    String nric_fin,
+    String nric_fin_ppn,
     String full_name,
-    FieldValue fcm_tokens,
     String contact_number,
     String country_code,
+    FieldValue fcm_tokens,
     FieldValue updatedAt,
     FieldValue createdAt
   ) {
     this.uid = uid;
-    this.nric_fin = nric_fin;
+    this.nric_fin_ppn = nric_fin_ppn;
     this.full_name = full_name;
     this.fcm_tokens = fcm_tokens;
     this.contact_number = contact_number;
@@ -52,16 +52,12 @@ public class User {
     return this.uid;
   }
 
-  public String getNric_fin() {
-    return this.nric_fin;
+  public String getNric_fin_ppn() {
+    return this.nric_fin_ppn;
   }
 
   public String getFull_name() {
     return this.full_name;
-  }
-
-  public FieldValue getFcm_tokens() {
-    return this.fcm_tokens;
   }
 
   public String getContact_number() {
@@ -70,6 +66,10 @@ public class User {
 
   public String getCountry_code() {
     return this.country_code;
+  }
+
+  public FieldValue getFcm_tokens() {
+    return this.fcm_tokens;
   }
 
   public FieldValue getUpdatedAt() {
