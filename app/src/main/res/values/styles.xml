@@ -20,12 +20,18 @@
     <item name="android:textSize">25dp</item>
     <item name="android:textStyle">bold</item>
     <item name="android:textColor">@color/gray700</item>
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="fontFamily">@font/montserrat_bold</item>
   </style>
 
   <style name="AppTheme.SubHeaderStyle">
     <item name="android:textSize">15dp</item>
     <item name="android:textStyle">normal</item>
     <item name="android:textColor">@color/gray500</item>
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="fontFamily">@font/montserrat_regular</item>
   </style>
 
   <!--  Material Theme -->

@@ -1,10 +1,12 @@
 package com.example.traccite;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -40,6 +42,11 @@ public class MainActivity extends AppCompatActivity {
   private static final String TOS_URL = "https://google.com";
   private static final String PRIVACY_POLICY_URL = "https://ite.edu.sg";
 
+  @NonNull
+  public static Intent createIntent(@NonNull Context context) {
+    return new Intent(context, MainActivity.class);
+  }
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -57,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
       getSharedPreferences(AppTraCCite.GLOBAL_PREFS, MODE_PRIVATE);
 
     // TODO: Remove in production.
-    AuthUI.getInstance().signOut(this);
+//    AuthUI.getInstance().signOut(this);
 
     /*
      * Checks to see if the user is currently authenticated
