@@ -5,19 +5,13 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
 
 import java.util.Arrays;
 import java.util.List;
@@ -25,16 +19,24 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-  // Logcat: Logging Tag
+  /*
+   * Logcat: Logging Tag
+   */
   private static final String TAG = "MainActivity";
 
-  // Firebase: Arbitrary Request Code
+  /*
+   * Firebase: Arbitrary Request Code
+   */
   private static final int RC_SIGN_IN = 1422;
 
-  // Firebase: Phone Auth Default Number
+  /*
+   * Firebase: Phone Auth Default Number
+   */
   private static final String DEFAULT_NUMBER = "+6531235617";
 
-  // Firebase: Privacy Policy & Terms Of Service
+  /*
+   * Firebase: Privacy Policy & Terms Of Service
+   */
   private static final String TOS_URL = "https://google.com";
   private static final String PRIVACY_POLICY_URL = "https://ite.edu.sg";
 
@@ -43,24 +45,46 @@ public class MainActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
+    /*
+     * Firebase Auth: Get the current user.
+     */
     FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+    /*
+     * SharedPreferences: Get global preferences storage.
+     */
     SharedPreferences preferences = getApplicationContext().
       getSharedPreferences(AppTraCCite.GLOBAL_PREFS, MODE_PRIVATE);
 
     // TODO: Remove in production.
     AuthUI.getInstance().signOut(this);
 
+    /*
+     * Checks to see if the user is currently authenticated
+     * or not.
+     *
+     * If the user is not authenticated, start the FirebaseUI
+     * login activity.
+     */
     if (currentUser == null) {
       createSignInIntent();
       return;
     }
 
+    /*
+     * Checks to see if the setup has been completed already.
+     *
+     * If it returns `false`, start the setup activity.
+     */
     if (!preferences.getBoolean(AppTraCCite.SETUP_COMPLETED_KEY, false)) {
       startActivity(SetupActivity.createIntent(this));
       finish();
       return;
     }
 
+    /*
+     * If none of the conditions above match, start the home activity.
+     */
     startActivity(HomeActivity.createIntent(this));
     finish();
   }

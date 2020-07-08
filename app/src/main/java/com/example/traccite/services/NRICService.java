@@ -1,22 +1,28 @@
-package com.example.traccite;
+package com.example.traccite.services;
 
 import android.app.Application;
 
-public class NRICManager extends Application {
+public class NRICService extends Application {
   /*
    * checkNRICForValidity checks the given NRIC number with
    * Singapore Government's NRIC hashing algorithm (private).
    *
    * Source: https://github.com/taronaeo/NRICValidator/
    */
-  public static boolean checkNRICForValidity(String nric) {
-    // NRIC Checksum Total
+  public static boolean checkNRIC(String nric) {
+    /*
+     * NRIC Checksum Total
+     */
     int checksum_total = 0;
 
-    // NRIC Checksum
+    /*
+     * NRIC Checksum Weights
+     */
     final int[] checksum_weights = {2, 7, 6, 5, 4, 3, 2};
 
-    // NRIC Breakdown
+    /*
+     * NRIC Breakdown
+     */
     final String nric_number = nric.trim().toUpperCase();
     final String nric_digits = nric.substring(1, 8);
     final String prefix_letter = String.valueOf(nric.charAt(0));
@@ -47,9 +53,17 @@ public class NRICManager extends Application {
       ) * checksum_weights[i];
     }
 
+    /*
+     * Checks if NRIC/FIN number has "T" or "G" as the prefix.
+     * Automatically adds 4 to the checksum total.
+     */
     if (prefix_letter.equals("T") || prefix_letter.equals("G"))
       checksum_total += 4;
 
+    /*
+     * Checks if NRIC/FIN number has "S" or "T" as the prefix.
+     * Runs the formula with the checksum lookup table.
+     */
     if (prefix_letter.equals("S") || prefix_letter.equals("T")) {
       final String[] checksum_lookup = {
         "J", "Z", "I", "H", "G", "F", "E", "D", "C", "B", "A"
@@ -59,6 +73,10 @@ public class NRICManager extends Application {
         return true;
     }
 
+    /*
+     * Checks if NRIC/FIN number has "F" or "G" as the prefix.
+     * Runs the formula with the checksum lookup table.
+     */
     if (prefix_letter.equals("F") || prefix_letter.equals("G")) {
       final String[] checksum_lookup = {
         "X", "W", "U", "T", "R", "Q", "P", "N", "M", "L", "K"
@@ -68,6 +86,10 @@ public class NRICManager extends Application {
         return true;
     }
 
+    /*
+     * If none of the conditions match, it will automatically return
+     * a `false` value signifying that the NRIC/FIN number is invalid.
+     */
     return false;
   }
 }

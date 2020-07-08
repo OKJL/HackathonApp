@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.traccite.models.User;
 import com.example.traccite.services.FCMService;
+import com.example.traccite.services.NRICService;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -84,11 +85,21 @@ public class SetupActivity extends AppCompatActivity {
           return;
         }
 
-        if (!NRICManager.checkNRICForValidity(mNricFin.getEditText().getText().toString().toUpperCase())) {
+        if (
+          !NRICService.checkNRIC(
+            mNricFin.getEditText()
+              .getText()
+              .toString()
+              .toUpperCase()
+          )
+        ) {
           mNricFin.setError("NRIC/FIN is invalid!");
           return;
         }
 
+        /*
+         * Reset the error message
+         */
         mNricFin.setError(null);
 
         if (mFullName.getEditText().getText().toString().isEmpty()) {
@@ -96,6 +107,9 @@ public class SetupActivity extends AppCompatActivity {
           return;
         }
 
+        /*
+         * Reset the error message
+         */
         mFullName.setError(null);
 
         if (mContactNumber.getEditText().getText().toString().isEmpty()) {
@@ -103,8 +117,14 @@ public class SetupActivity extends AppCompatActivity {
           return;
         }
 
+        /*
+         * Reset the error message
+         */
         mContactNumber.setError(null);
 
+        /*
+         * Create the user data structure
+         */
         User user = new User(
           mUser.getUid(),
           mNricFin.getEditText().getText().toString(),
@@ -114,6 +134,9 @@ public class SetupActivity extends AppCompatActivity {
           mResidentOfSingapore.isChecked()
         );
 
+        /*
+         * Upload the data into Firestore
+         */
         mDb.document("users/" + user.getUid())
           .set(user, SetOptions.merge())
           .addOnSuccessListener(new OnSuccessListener<Void>() {
