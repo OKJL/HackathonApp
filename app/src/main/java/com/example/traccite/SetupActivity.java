@@ -23,6 +23,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -129,15 +130,15 @@ public class SetupActivity extends AppCompatActivity {
           mUser.getUid(),
           mNricFin.getEditText().getText().toString(),
           mFullName.getEditText().getText().toString(),
-          FCMService.getToken(SetupActivity.this),
+          FieldValue.arrayUnion(FCMService.getToken(SetupActivity.this)),
           mContactNumber.getEditText().getText().toString(),
-          mResidentOfSingapore.isChecked()
+          mResidentOfSingapore.isChecked() ? "Singapore" : null
         );
 
         /*
          * Upload the data into Firestore
          */
-        mDb.document("users/" + user.getUid())
+        mDb.document("users/" + mUser.getUid())
           .set(user, SetOptions.merge())
           .addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override

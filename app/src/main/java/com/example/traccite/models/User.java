@@ -6,9 +6,9 @@ public class User {
   private String uid;
   private String nric_fin;
   private String full_name;
-  private String device_id;
+  private String country_code;
+  private FieldValue fcm_tokens;
   private String contact_number;
-  private boolean resident_of_singapore;
   private FieldValue updatedAt;
   private FieldValue createdAt;
 
@@ -16,34 +16,34 @@ public class User {
     String uid,
     String nric_fin,
     String full_name,
-    String device_id,
+    FieldValue fcm_tokens,
     String contact_number,
-    boolean resident_of_singapore
+    String country_code
   ) {
     this.uid = uid;
     this.nric_fin = nric_fin;
     this.full_name = full_name;
-    this.device_id = device_id;
+    this.fcm_tokens = fcm_tokens;
     this.contact_number = contact_number;
-    this.resident_of_singapore = resident_of_singapore;
+    this.country_code = country_code;
   }
 
   public User(
     String uid,
     String nric_fin,
     String full_name,
-    String device_id,
+    FieldValue fcm_tokens,
     String contact_number,
-    boolean resident_of_singapore,
+    String country_code,
     FieldValue updatedAt,
     FieldValue createdAt
   ) {
     this.uid = uid;
     this.nric_fin = nric_fin;
     this.full_name = full_name;
-    this.device_id = device_id;
+    this.fcm_tokens = fcm_tokens;
     this.contact_number = contact_number;
-    this.resident_of_singapore = resident_of_singapore;
+    this.country_code = country_code;
     this.updatedAt = updatedAt;
     this.createdAt = createdAt;
   }
@@ -60,16 +60,16 @@ public class User {
     return this.full_name;
   }
 
-  public String getDevice_id() {
-    return this.device_id;
+  public FieldValue getFcm_tokens() {
+    return this.fcm_tokens;
   }
 
   public String getContact_number() {
     return this.contact_number;
   }
 
-  public boolean isResident_of_singapore() {
-    return this.resident_of_singapore;
+  public String getCountry_code() {
+    return this.country_code;
   }
 
   public FieldValue getUpdatedAt() {
