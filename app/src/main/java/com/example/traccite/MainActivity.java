@@ -1,5 +1,6 @@
 package com.example.traccite;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -38,6 +39,11 @@ public class MainActivity extends AppCompatActivity {
   private static final String TOS_URL = "https://google.com";
   private static final String PRIVACY_POLICY_URL = "https://ite.edu.sg";
 
+  @NonNull
+  public static Intent createIntent(@NonNull Context context) {
+    return new Intent(context, MainActivity.class);
+  }
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -57,6 +63,12 @@ public class MainActivity extends AppCompatActivity {
 
     if (!preferences.getBoolean(AppTraCCite.SETUP_COMPLETED_KEY, false)) {
       startActivity(SetupActivity.createIntent(this));
+      finish();
+      return;
+    }
+
+    if (currentUser.getEmail() != null && currentUser.getEmail().equals("jytan@ourkidslearningjourney.org")) {
+      startActivity(AdminActivity.createIntent(this));
       finish();
       return;
     }

@@ -118,7 +118,7 @@ public class SetupActivity extends AppCompatActivity {
               editor.putBoolean(AppTraCCite.SETUP_COMPLETED_KEY, true);
               editor.commit();
 
-              startActivity(HomeActivity.createIntent(SetupActivity.this));
+              startActivity(MainActivity.createIntent(SetupActivity.this));
               finish();
             }
           })
@@ -167,7 +167,7 @@ public class SetupActivity extends AppCompatActivity {
      * set the phone number to the Contact Number field
      * in the layout and disable any inputs from it.
      */
-    if (!mUser.getPhoneNumber().isEmpty()) {
+    if (mUser.getPhoneNumber() != null && !mUser.getPhoneNumber().isEmpty()) {
       mContactNumber.setText(mUser.getPhoneNumber());
       mContactNumber.setEnabled(false);
     }
