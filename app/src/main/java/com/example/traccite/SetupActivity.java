@@ -16,14 +16,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.traccite.models.User;
 import com.example.traccite.services.FCMService;
 import com.example.traccite.services.NRICService;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 public class SetupActivity extends AppCompatActivity {
 
@@ -129,6 +132,25 @@ public class SetupActivity extends AppCompatActivity {
         user.put(User.CONTACT_NUMBER, mContactNumber.getEditText().getText().toString());
         user.put(User.COUNTRY_NAME, mResidentOfSingapore.isChecked() ? "Singapore".toUpperCase() : null);
         user.put(User.FCM_TOKENS, FieldValue.arrayUnion(FCMService.getToken(SetupActivity.this)));
+
+        /*
+         * Subscribe user to topic
+         *
+         * TODO: Replace "SINGAPORE" with actual countries
+         */
+        FirebaseMessaging
+          .getInstance()
+          .subscribeToTopic("SINGAPORE")
+          .addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+              if (!task.isSuccessful()) {
+                showToast("Failed to subscribe to topic!");
+              }
+
+              showToast("Successfully subscribed to topic!");
+            }
+          });
 
         /*
          * Upload the data into Firestore
