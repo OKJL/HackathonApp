@@ -1,5 +1,7 @@
 package com.example.traccite.models;
 
+import com.google.firebase.firestore.FieldValue;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,27 +16,27 @@ public class User {
   public static final String CREATED_AT = "createdAt";
   private final Map<String, Object> map = new HashMap<>();
 
-//  public Map<String, Object> User(
-//    String uid,
-//    String nric_fin_ppt,
-//    String full_name,
-//    String contact_number,
-//    String country_code,
-//    String[] fcm_tokens,
-//    FieldValue updatedAt,
-//    FieldValue createdAt
-//  ) {
-//    map.put(UID, uid);
-//    map.put(NRIC_FIN_PPT, nric_fin_ppt);
-//    map.put(FULL_NAME, full_name);
-//    map.put(CONTACT_NUMBER, contact_number);
-//    map.put(COUNTRY_CODE, country_code);
-//    map.put(FCM_TOKENS, fcm_tokens);
-//    map.put(UPDATED_AT, updatedAt);
-//    map.put(CREATED_AT, createdAt);
-//
-//    return map;
-//  }
+  public Map<String, Object> User(
+    String uid,
+    String nric_fin_ppt,
+    String full_name,
+    String contact_number,
+    String country_code,
+    String[] fcm_tokens,
+    FieldValue updatedAt,
+    FieldValue createdAt
+  ) {
+    map.put(UID, uid);
+    map.put(NRIC_FIN_PPT, nric_fin_ppt);
+    map.put(FULL_NAME, full_name);
+    map.put(CONTACT_NUMBER, contact_number);
+    map.put(COUNTRY_CODE, country_code);
+    map.put(FCM_TOKENS, fcm_tokens);
+    map.put(UPDATED_AT, updatedAt);
+    map.put(CREATED_AT, createdAt);
+
+    return map;
+  }
 
   public Map<String, Object> retrieve() {
     return map;
