@@ -127,7 +127,7 @@ public class SetupActivity extends AppCompatActivity {
         user.put(User.NRIC_FIN_PPT, mNricFin.getEditText().getText().toString().toUpperCase());
         user.put(User.FULL_NAME, mFullName.getEditText().getText().toString().toUpperCase());
         user.put(User.CONTACT_NUMBER, mContactNumber.getEditText().getText().toString());
-        user.put(User.COUNTRY_CODE, mResidentOfSingapore.isChecked() ? "Singapore".toUpperCase() : null);
+        user.put(User.COUNTRY_NAME, mResidentOfSingapore.isChecked() ? "Singapore".toUpperCase() : null);
         user.put(User.FCM_TOKENS, FieldValue.arrayUnion(FCMService.getToken(SetupActivity.this)));
 
         /*

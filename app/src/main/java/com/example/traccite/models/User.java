@@ -10,7 +10,7 @@ public class User {
   public static final String NRIC_FIN_PPT = "NRIC/FIN/PPT";
   public static final String FULL_NAME = "Full Name";
   public static final String CONTACT_NUMBER = "Contact Number";
-  public static final String COUNTRY_CODE = "Country Code";
+  public static final String COUNTRY_NAME = "Country Name";
   public static final String FCM_TOKENS = "FCM Tokens";
   public static final String UPDATED_AT = "updatedAt";
   public static final String CREATED_AT = "createdAt";
@@ -30,7 +30,7 @@ public class User {
     map.put(NRIC_FIN_PPT, nric_fin_ppt);
     map.put(FULL_NAME, full_name);
     map.put(CONTACT_NUMBER, contact_number);
-    map.put(COUNTRY_CODE, country_code);
+    map.put(COUNTRY_NAME, country_code);
     map.put(FCM_TOKENS, fcm_tokens);
     map.put(UPDATED_AT, updatedAt);
     map.put(CREATED_AT, createdAt);
