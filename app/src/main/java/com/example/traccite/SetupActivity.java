@@ -16,18 +16,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.traccite.models.User;
 import com.example.traccite.services.FCMService;
 import com.example.traccite.services.NRICService;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
 
 public class SetupActivity extends AppCompatActivity {
 
@@ -126,20 +122,19 @@ public class SetupActivity extends AppCompatActivity {
         /*
          * Create the user data structure
          */
-        User user = new User(
-          mUser.getUid(),
-          mNricFin.getEditText().getText().toString(),
-          mFullName.getEditText().getText().toString(),
-          mContactNumber.getEditText().getText().toString(),
-          mResidentOfSingapore.isChecked() ? "Singapore" : null,
-          FieldValue.arrayUnion(FCMService.getToken(SetupActivity.this))
-        );
+        User user = new User();
+        user.put(User.UID, mUser.getUid());
+        user.put(User.NRIC_FIN_PPT, mNricFin.getEditText().getText().toString().toUpperCase());
+        user.put(User.FULL_NAME, mFullName.getEditText().getText().toString().toUpperCase());
+        user.put(User.CONTACT_NUMBER, mContactNumber.getEditText().getText().toString());
+        user.put(User.COUNTRY_CODE, mResidentOfSingapore.isChecked() ? "Singapore".toUpperCase() : null);
+        user.put(User.FCM_TOKENS, FieldValue.arrayUnion(FCMService.getToken(SetupActivity.this)));
 
         /*
          * Upload the data into Firestore
          */
         mDb.document("users/" + mUser.getUid())
-          .set(user, SetOptions.merge())
+          .set(user.retrieve(), SetOptions.merge())
           .addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
@@ -206,25 +201,5 @@ public class SetupActivity extends AppCompatActivity {
      * Android: Listen for onClick events
      */
     listenForOnClick(mEditor);
-
-    FirebaseInstanceId
-      .getInstance()
-      .getInstanceId()
-      .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-        @Override
-        public void onComplete(@NonNull Task<InstanceIdResult> task) {
-          if (!task.isSuccessful()) {
-            Log.e(TAG, "Failed to get FCM instance: " + task.getException());
-            return;
-          }
-
-          Log.d(TAG, task.getResult().getToken());
-
-          getSharedPreferences(AppTraCCite.GLOBAL_PREFS, MODE_PRIVATE)
-            .edit()
-            .putString(AppTraCCite.FCM_TOKEN_KEY, task.getResult().getToken())
-            .apply();
-        }
-      });
   }
 }

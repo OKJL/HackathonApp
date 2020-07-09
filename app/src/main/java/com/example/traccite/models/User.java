@@ -1,82 +1,50 @@
 package com.example.traccite.models;
 
-import com.google.firebase.firestore.FieldValue;
+import java.util.HashMap;
+import java.util.Map;
 
 public class User {
-  private String uid;
-  private String nric_fin_ppn;
-  private String full_name;
-  private String country_code;
-  private String contact_number;
-  private FieldValue fcm_tokens;
-  private FieldValue updatedAt;
-  private FieldValue createdAt;
+  public static final String UID = "UID";
+  public static final String NRIC_FIN_PPT = "NRIC/FIN/PPT";
+  public static final String FULL_NAME = "Full Name";
+  public static final String CONTACT_NUMBER = "Contact Number";
+  public static final String COUNTRY_CODE = "Country Code";
+  public static final String FCM_TOKENS = "FCM Tokens";
+  public static final String UPDATED_AT = "updatedAt";
+  public static final String CREATED_AT = "createdAt";
+  private final Map<String, Object> map = new HashMap<>();
 
-  public User(
-    String uid,
-    String nric_fin_ppn,
-    String full_name,
-    String contact_number,
-    String country_code,
-    FieldValue fcm_tokens
-  ) {
-    this.uid = uid;
-    this.nric_fin_ppn = nric_fin_ppn;
-    this.full_name = full_name;
-    this.fcm_tokens = fcm_tokens;
-    this.contact_number = contact_number;
-    this.country_code = country_code;
+//  public Map<String, Object> User(
+//    String uid,
+//    String nric_fin_ppt,
+//    String full_name,
+//    String contact_number,
+//    String country_code,
+//    String[] fcm_tokens,
+//    FieldValue updatedAt,
+//    FieldValue createdAt
+//  ) {
+//    map.put(UID, uid);
+//    map.put(NRIC_FIN_PPT, nric_fin_ppt);
+//    map.put(FULL_NAME, full_name);
+//    map.put(CONTACT_NUMBER, contact_number);
+//    map.put(COUNTRY_CODE, country_code);
+//    map.put(FCM_TOKENS, fcm_tokens);
+//    map.put(UPDATED_AT, updatedAt);
+//    map.put(CREATED_AT, createdAt);
+//
+//    return map;
+//  }
+
+  public Map<String, Object> retrieve() {
+    return map;
   }
 
-  public User(
-    String uid,
-    String nric_fin_ppn,
-    String full_name,
-    String contact_number,
-    String country_code,
-    FieldValue fcm_tokens,
-    FieldValue updatedAt,
-    FieldValue createdAt
-  ) {
-    this.uid = uid;
-    this.nric_fin_ppn = nric_fin_ppn;
-    this.full_name = full_name;
-    this.fcm_tokens = fcm_tokens;
-    this.contact_number = contact_number;
-    this.country_code = country_code;
-    this.updatedAt = updatedAt;
-    this.createdAt = createdAt;
+  public void put(String key, Object value) {
+    map.put(key, value);
   }
 
-  public String getUid() {
-    return this.uid;
-  }
-
-  public String getNric_fin_ppn() {
-    return this.nric_fin_ppn;
-  }
-
-  public String getFull_name() {
-    return this.full_name;
-  }
-
-  public String getContact_number() {
-    return this.contact_number;
-  }
-
-  public String getCountry_code() {
-    return this.country_code;
-  }
-
-  public FieldValue getFcm_tokens() {
-    return this.fcm_tokens;
-  }
-
-  public FieldValue getUpdatedAt() {
-    return this.updatedAt;
-  }
-
-  public FieldValue getCreatedAt() {
-    return this.createdAt;
+  public Object get(String key) {
+    return map.get(key);
   }
 }
