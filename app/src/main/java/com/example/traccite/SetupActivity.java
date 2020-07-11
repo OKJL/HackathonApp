@@ -6,7 +6,9 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.Toast;
 
@@ -27,6 +29,7 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.rilixtech.CountryCodePicker;
 
 public class SetupActivity extends AppCompatActivity {
 
@@ -51,7 +54,7 @@ public class SetupActivity extends AppCompatActivity {
   private TextInputLayout mNricFin;
   private TextInputLayout mFullName;
   private TextInputLayout mContactNumber;
-  private Switch mResidentOfSingapore;
+  private Spinner mCountry;
   private Button mContinue;
 
   @NonNull
@@ -130,7 +133,7 @@ public class SetupActivity extends AppCompatActivity {
         user.put(User.NRIC_FIN_PPT, mNricFin.getEditText().getText().toString().toUpperCase());
         user.put(User.FULL_NAME, mFullName.getEditText().getText().toString().toUpperCase());
         user.put(User.CONTACT_NUMBER, mContactNumber.getEditText().getText().toString());
-        user.put(User.COUNTRY_NAME, mResidentOfSingapore.isChecked() ? "Singapore".toUpperCase() : null);
+        user.put(User.COUNTRY_NAME, mCountry.getSelectedItem());
         user.put(User.FCM_TOKENS, FieldValue.arrayUnion(FCMService.getToken(SetupActivity.this)));
 
         /*
@@ -185,6 +188,215 @@ public class SetupActivity extends AppCompatActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_setup);
+    String[] aCountries = new String[] {
+      "Afghanistan",
+      "Albania",
+      "Algeria",
+      "Andorra",
+      "Angola",
+      "Antigua and Barbuda",
+      "Argentina" ,
+      "Armenia",
+      "Australia",
+      "Austria",
+      "Azerbaijan",
+      "Bahamas",
+      "Bahrain",
+      "Bangladesh",
+      "Barbados",
+      "Belarus",
+      "Belgium",
+      "Belize",
+      "Benin",
+      "Bhutan",
+      "Bolivia",
+      "Bosnia and Herzegovina",
+      "Botswana",
+      "Brazil",
+      "Brunei",
+      "Bulgaria",
+      "Burkina Faso",
+      "Burundi",
+      "Cabo Verde",
+      "Cambodia",
+      "Cameroon",
+      "Canada",
+      "Central African Republic (CAR)",
+      "Chad",
+      "Chile",
+      "China",
+      "Colombia",
+      "Comoros",
+      "Congo, Democratic Republic of the Congo, Republic of the Costa Rica",
+      "Cote d'Ivoire",
+      "Croatia",
+      "Cuba",
+      "Cyprus",
+      "Czechia",
+      "Denmark",
+      "Djibouti",
+      "Dominica",
+      "Dominican Republic",
+      "Ecuador",
+      "Egypt",
+      "El Salvador",
+      "Equatorial Guinea",
+      "Eritrea",
+      "Estonia",
+      "Eswatini",
+      "Ethiopia",
+      "Fiji",
+      "Finland",
+      "France",
+      "Gabon",
+      "Gambia",
+      "Georgia",
+      "Germany",
+      "Ghana",
+      "Greece",
+      "Grenada" ,
+      "Guatemala",
+      "Guinea",
+      "Guinea-Bissau",
+      "Haiti",
+      "Honduras",
+      "Hungary",
+      "Iceland",
+      "India",
+      "Indonesia",
+      "Iran",
+      "Iraq",
+      "Ireland",
+      "Israel",
+      "Italy",
+      "Jamaica",
+      "Japan",
+      "Jordan",
+      "Kazakhstan",
+      "Kenya",
+      "Kiribati",
+      "Kosovo",
+      "Kuwait",
+      "Kyrgyzstan",
+      "Dhekelia",
+      "Laos",
+      "Latvia",
+      "Lebanon",
+      "Lesotho",
+      "Liberia",
+      "Libya",
+      "Liechtenstein",
+      "Lithuania",
+      "Luxembour",
+      "Madagascar",
+      "Malawi",
+      "Malaysia",
+      "Maldives",
+      "Mali",
+      "Malta",
+      "Marshall Islands",
+      "Mauritania",
+      "Mauritius",
+      "Mexico",
+      "Micronesia",
+      "Moldova",
+      "Monaco",
+      "Mongolia",
+      "Montenegro",
+      "Morocco",
+      "Mozambique",
+      "Myanmar",
+      "Namibia",
+      "Nauru",
+      "Nepal",
+      "Netherlands",
+      "New Zealand",
+      "Nicaragua",
+      "Niger",
+      "Nigeria",
+      "North Korea",
+      "North Macedonia",
+      "Norway",
+      "Ecuador",
+      "Oman",
+      "Pakistan",
+      "Palau",
+      "Palestine",
+      "Panama",
+      "Papua New Guinea",
+      "Paraguay",
+      "Peru",
+      "Philippines",
+      "Poland",
+      "Portugal",
+      "Qatar",
+      "Romania",
+      "Russia",
+      "Rwanda",
+      "Saint Kitts and Nevis",
+      "Saint Lucia",
+      "Saint Vincent and the Grenadines",
+      "Samoa",
+      "San Marino",
+      "Sao Tome and Principe",
+      "Saudi Arabia",
+      "Senegal",
+      "Serbia",
+      "Seychelles",
+      "Sierra Leone",
+      "Singapore",
+      "Slovakia",
+      "Slovenia",
+      "Solomon Islands",
+      "Somalia",
+      "South Africa",
+      "South Korea",
+      "South Sudan",
+      "Spain",
+      "Sri Lanka",
+      "Sudan",
+      "Suriname",
+      "Sweden",
+      "Switzerland",
+      "Syria",
+      "Taiwan",
+      "Tajikistan",
+      "Tanzania",
+      "Thailand",
+      "Timor-Leste",
+      "Togo",
+      "Tonga",
+      "Trinidad and Tobago",
+      "Tunisia",
+      "Turkey",
+      "Turkmenistan",
+      "Tuvalu",
+      "Europa Island",
+      "Uganda",
+      "Ukraine",
+      "United Arab Emirates (UAE)",
+      "United Kingdom (UK)",
+      "United States of America (USA)",
+      "Uruguay",
+      "Uzbekistan",
+      "Vanuatu",
+      "Vatican City",
+      "Venezuela",
+      "Vietnam",
+      "Fiji",
+      "Yemen",
+      "Zambia",
+      "Zimbabwe"
+    };
+    mCountry = (Spinner) findViewById(R.id.residency);
+    ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+      android.R.layout.simple_spinner_item, aCountries);
+    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+    mCountry.setAdapter(adapter);
+
+
+    // TODO: add into firebase
+    CountryCodePicker ccp = (CountryCodePicker) findViewById(R.id.ccp);
 
     /*
      * SharedPreferences: Editor For Setting Values
@@ -203,7 +415,6 @@ public class SetupActivity extends AppCompatActivity {
     mNricFin = findViewById(R.id.nric_number);
     mFullName = findViewById(R.id.full_name);
     mContactNumber = findViewById(R.id.contact_number);
-    mResidentOfSingapore = findViewById(R.id.resident_of_singapore);
     mContinue = findViewById(R.id.continue_button);
 
     /*

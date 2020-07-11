@@ -1,14 +1,18 @@
 package com.example.traccite;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+import android.Manifest.permission;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,8 +22,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 
+import java.security.Permission;
+
 public class HomeActivity extends AppCompatActivity {
   int REQUEST_ENABLE_BT = 0;
+  int REQUEST_ALL_PERMISSION = 1;
 
   /*
    * Android: From Layout
@@ -70,6 +77,16 @@ public class HomeActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_home);
 
+    String[] Permissions = {
+      permission.ACCESS_COARSE_LOCATION,
+      permission.ACCESS_FINE_LOCATION
+    };
+    if(!hasPermissionAccess(Permissions)){
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        requestPermissions(Permissions, REQUEST_ALL_PERMISSION);
+      }
+    }
+
     /*
      * Link variables to layout ids
      */
@@ -103,5 +120,15 @@ public class HomeActivity extends AppCompatActivity {
         startActivityForResult(itEnableBluetooth, REQUEST_ENABLE_BT);
       }
     }
+  }
+  private boolean hasPermissionAccess(String... permissions) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+      for (String permission : permissions) {
+        if (checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED) {
+          return false;
+        }
+      }
+    }
+    return true;
   }
 }

@@ -71,6 +71,12 @@
           android:textCursorDrawable="@null" />
       </com.google.android.material.textfield.TextInputLayout>
 
+      <com.rilixtech.CountryCodePicker
+        android:id="@+id/ccp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:ccp_defaultNameCode="SG"/>
+
       <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/contact_number"
         style="@style/Widget.AppTheme.TextInputLayout.OutlinedBox"
@@ -86,14 +92,10 @@
           android:textCursorDrawable="@null" />
       </com.google.android.material.textfield.TextInputLayout>
 
-      <Switch
-        android:id="@+id/resident_of_singapore"
+      <Spinner
+        android:id="@+id/residency"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:checked="true"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:text="I am a resident of Singapore" />
+        android:layout_height="wrap_content" />
     </LinearLayout>
 
     <LinearLayout
