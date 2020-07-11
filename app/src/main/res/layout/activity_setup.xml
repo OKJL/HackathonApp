@@ -71,27 +71,41 @@
           android:textCursorDrawable="@null" />
       </com.google.android.material.textfield.TextInputLayout>
 
+    </LinearLayout>
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
+
       <com.rilixtech.CountryCodePicker
         android:id="@+id/ccp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:ccp_defaultNameCode="SG"/>
+        android:layout_width="57dp"
+        android:layout_height="42dp"
+        android:layout_gravity="bottom"
+        android:layout_weight="1"
+        app:ccp_defaultNameCode="SG" />
 
       <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/contact_number"
         style="@style/Widget.AppTheme.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="235dp"
+        android:layout_height="55dp"
+        android:layout_gravity="left"
         android:hint="Contact Number"
         app:errorEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
           android:layout_width="match_parent"
-          android:layout_height="wrap_content"
+          android:layout_height="56dp"
+          android:layout_gravity="left"
           android:inputType="number"
           android:textCursorDrawable="@null" />
       </com.google.android.material.textfield.TextInputLayout>
 
+
+    </LinearLayout>
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
       <Spinner
         android:id="@+id/residency"
         android:layout_width="match_parent"
