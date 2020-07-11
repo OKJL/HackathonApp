@@ -43,7 +43,7 @@
         style="@style/Widget.AppTheme.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="NRIC/FIN"
+        android:hint="NRIC/FIN/Passport"
         app:counterEnabled="true"
         app:counterMaxLength="9">
 
@@ -52,7 +52,7 @@
         <com.google.android.material.textfield.TextInputEditText
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:inputType="textCapCharacters"
+          android:inputType="textCapCharacters|textNoSuggestions"
           android:textCursorDrawable="@null" />
       </com.google.android.material.textfield.TextInputLayout>
 
@@ -67,20 +67,20 @@
         <com.google.android.material.textfield.TextInputEditText
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:inputType="textCapCharacters"
+          android:inputType="textCapCharacters|textNoSuggestions"
           android:textCursorDrawable="@null" />
       </com.google.android.material.textfield.TextInputLayout>
 
     </LinearLayout>
     <LinearLayout
       android:layout_width="match_parent"
-      android:layout_height="match_parent">
+      android:layout_height="wrap_content">
 
       <com.rilixtech.CountryCodePicker
         android:id="@+id/ccp"
         android:layout_width="57dp"
         android:layout_height="42dp"
-        android:layout_gravity="bottom"
+        android:layout_gravity="center"
         android:layout_weight="1"
         app:ccp_defaultNameCode="SG" />
 
@@ -88,7 +88,7 @@
         android:id="@+id/contact_number"
         style="@style/Widget.AppTheme.TextInputLayout.OutlinedBox"
         android:layout_width="235dp"
-        android:layout_height="55dp"
+        android:layout_height="56dp"
         android:layout_gravity="left"
         android:hint="Contact Number"
         app:errorEnabled="true">
@@ -103,6 +103,7 @@
 
 
     </LinearLayout>
+
     <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="match_parent">
