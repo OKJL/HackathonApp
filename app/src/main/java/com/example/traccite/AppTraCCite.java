@@ -2,6 +2,9 @@ package com.example.traccite;
 
 import android.app.Application;
 
+import com.example.traccite.services.FirebaseService;
+import com.example.traccite.services.PreferencesService;
+
 public class AppTraCCite extends Application {
   /*
    * SharedPreferences: Preference Names
@@ -22,5 +25,11 @@ public class AppTraCCite extends Application {
   @Override
   public void onCreate() {
     super.onCreate();
+
+    /*
+     * Initialize Services
+     */
+    FirebaseService.initializeService();
+    PreferencesService.initializeService(getApplicationContext());
   }
 }

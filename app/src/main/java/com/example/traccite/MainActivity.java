@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
     /*
      * FCMService: Fetch FCM Token ID.
      */
-    FCMService.fetchTokenFromFCM(getApplicationContext());
+    FCMService.fetchFCMToken(getApplicationContext());
 
     /*
      * Checks to see if the user is currently authenticated
