@@ -2,14 +2,12 @@ package com.example.traccite;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
-import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -17,18 +15,15 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.traccite.models.User;
 import com.example.traccite.services.FCMService;
+import com.example.traccite.services.FirebaseService;
 import com.example.traccite.services.NRICService;
+import com.example.traccite.services.PreferencesService;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FieldValue;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.SetOptions;
-import com.google.firebase.messaging.FirebaseMessaging;
 import com.rilixtech.CountryCodePicker;
 
 public class SetupActivity extends AppCompatActivity {
@@ -37,16 +32,6 @@ public class SetupActivity extends AppCompatActivity {
    * Logcat: Logging Tag
    */
   private static final String TAG = "SetupActivity";
-
-  /*
-   * Firebase: Get Firebase Instance
-   */
-  private final FirebaseFirestore mDb = FirebaseFirestore.getInstance();
-
-  /*
-   * Firebase: Get Current Authenticated User
-   */
-  private final FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
 
   /*
    * Android: Fields From Layout
@@ -66,15 +51,7 @@ public class SetupActivity extends AppCompatActivity {
     Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
   }
 
-  private void resetPrefKey(SharedPreferences.Editor editor) {
-    /*
-     * SharedPreferences: Reset Key-Value pair
-     */
-    editor.putBoolean(AppTraCCite.SETUP_COMPLETED_KEY, false);
-    editor.apply();
-  }
-
-  private void listenForOnClick(final SharedPreferences.Editor editor) {
+  private void listenForOnClick() {
     mContinue.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
@@ -129,21 +106,35 @@ public class SetupActivity extends AppCompatActivity {
          * Create the user data structure
          */
         User user = new User();
-        user.put(User.UID, mUser.getUid());
+        user.put(User.UID, FirebaseService.getCurrentUser().getUid());
         user.put(User.NRIC_FIN_PPT, mNricFin.getEditText().getText().toString().toUpperCase());
         user.put(User.FULL_NAME, mFullName.getEditText().getText().toString().toUpperCase());
         user.put(User.CONTACT_NUMBER, mContactNumber.getEditText().getText().toString());
         user.put(User.COUNTRY_NAME, mCountry.getSelectedItem());
-        user.put(User.FCM_TOKENS, FieldValue.arrayUnion(FCMService.getToken(SetupActivity.this)));
+        user.put(User.FCM_TOKENS, FieldValue.arrayUnion(FCMService.getFCMToken(SetupActivity.this)));
 
         /*
-         * Subscribe user to topic
+         * Subscribe user to ALL_USERS topic for global application
+         * broadcast.
+         */
+        FCMService.subscribeToTopic("ALL_USERS")
+          .addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+              if (!task.isSuccessful()) {
+                showToast("Failed to subscribe to ALL_USERS topic!");
+              }
+
+              showToast("Successfully subscribed to ALL_USERS topic!");
+            }
+          });
+
+        /*
+         * Subscribe user to country topic
          *
          * TODO: Replace "SINGAPORE" with actual countries
          */
-        FirebaseMessaging
-          .getInstance()
-          .subscribeToTopic("SINGAPORE")
+        FCMService.subscribeToTopic("SINGAPORE")
           .addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
@@ -158,15 +149,21 @@ public class SetupActivity extends AppCompatActivity {
         /*
          * Upload the data into Firestore
          */
-        mDb.document("users/" + mUser.getUid())
-          .set(user.retrieve(), SetOptions.merge())
+        FirebaseService
+          .setUsersCollection(
+            FirebaseService.getCurrentUser().getUid(),
+            user.retrieve()
+          )
           .addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
               showToast("Successfully updated your profile.");
 
-              editor.putBoolean(AppTraCCite.SETUP_COMPLETED_KEY, true);
-              editor.commit();
+              PreferencesService
+                .setBooleanKey(
+                  PreferencesService.SETUP_COMPLETED_KEY,
+                  true
+                );
 
               startActivity(HomeActivity.createIntent(SetupActivity.this));
               finish();
@@ -188,14 +185,14 @@ public class SetupActivity extends AppCompatActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_setup);
-    String[] aCountries = new String[] {
+    String[] aCountries = new String[]{
       "Afghanistan",
       "Albania",
       "Algeria",
       "Andorra",
       "Angola",
       "Antigua and Barbuda",
-      "Argentina" ,
+      "Argentina",
       "Armenia",
       "Australia",
       "Austria",
@@ -254,7 +251,7 @@ public class SetupActivity extends AppCompatActivity {
       "Germany",
       "Ghana",
       "Greece",
-      "Grenada" ,
+      "Grenada",
       "Guatemala",
       "Guinea",
       "Guinea-Bissau",
@@ -399,15 +396,9 @@ public class SetupActivity extends AppCompatActivity {
     CountryCodePicker ccp = (CountryCodePicker) findViewById(R.id.ccp);
 
     /*
-     * SharedPreferences: Editor For Setting Values
-     */
-    final SharedPreferences.Editor mEditor = getApplicationContext()
-      .getSharedPreferences(AppTraCCite.GLOBAL_PREFS, MODE_PRIVATE).edit();
-
-    /*
      * SharedPreferences: Reset Key
      */
-    resetPrefKey(mEditor);
+    PreferencesService.setBooleanKey(PreferencesService.SETUP_COMPLETED_KEY, false);
 
     /*
      * Android: Linking variables to layout ids
@@ -425,14 +416,14 @@ public class SetupActivity extends AppCompatActivity {
      * set the phone number to the Contact Number field
      * in the layout and disable any inputs from it.
      */
-    if (!mUser.getPhoneNumber().isEmpty()) {
-      mContactNumber.getEditText().setText(mUser.getPhoneNumber());
+    if (!FirebaseService.getCurrentUser().getPhoneNumber().isEmpty()) {
+      mContactNumber.getEditText().setText(FirebaseService.getCurrentUser().getPhoneNumber());
       mContactNumber.setEnabled(false);
     }
 
     /*
      * Android: Listen for onClick events
      */
-    listenForOnClick(mEditor);
+    listenForOnClick();
   }
 }
