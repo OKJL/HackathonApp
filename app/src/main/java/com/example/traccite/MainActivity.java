@@ -11,6 +11,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.traccite.services.FCMService;
+import com.example.traccite.services.FirebaseService;
+import com.example.traccite.services.PreferencesService;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,6 +27,11 @@ public class MainActivity extends AppCompatActivity {
    * Logcat: Logging Tag
    */
   private static final String TAG = "MainActivity";
+
+  /*
+   * SharedPreference: Current Instance
+   */
+  private static SharedPreferences mPreferences;
 
   /*
    * Firebase: Arbitrary Request Code
@@ -52,16 +59,10 @@ public class MainActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
-    /*
-     * Firebase Auth: Get the current user.
-     */
-    FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-
-    /*
-     * SharedPreferences: Get global preferences storage.
-     */
-    SharedPreferences preferences = getApplicationContext().
-      getSharedPreferences(AppTraCCite.GLOBAL_PREFS, MODE_PRIVATE);
+    mPreferences = getSharedPreferences(
+      PreferencesService.GLOBAL_PREFERENCES,
+      MODE_PRIVATE
+    );
 
     /*
      * FCMService: Fetch FCM Token ID.
@@ -75,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
      * If the user is not authenticated, start the FirebaseUI
      * login activity.
      */
-    if (currentUser == null) {
+    if (FirebaseService.getCurrentUser() == null) {
       createSignInIntent();
       return;
     }
@@ -85,9 +86,10 @@ public class MainActivity extends AppCompatActivity {
      *
      * If it returns `false`, start the setup activity.
      */
-    if (!preferences.getBoolean(AppTraCCite.SETUP_COMPLETED_KEY, false)) {
+    if (!mPreferences.getBoolean(PreferencesService.SETUP_COMPLETED_KEY, false)) {
       startActivity(SetupActivity.createIntent(this));
       finish();
+
       return;
     }
 

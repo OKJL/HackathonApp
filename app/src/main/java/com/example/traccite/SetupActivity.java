@@ -2,6 +2,7 @@ package com.example.traccite;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -34,6 +35,11 @@ public class SetupActivity extends AppCompatActivity {
   private static final String TAG = "SetupActivity";
 
   /*
+   * SharedPreferences: Current Instance
+   */
+  private static SharedPreferences mPreferences;
+
+  /*
    * Android: Fields From Layout
    */
   private TextInputLayout mNricFin;
@@ -51,140 +57,16 @@ public class SetupActivity extends AppCompatActivity {
     Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
   }
 
-  private void listenForOnClick() {
-    mContinue.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        if (mNricFin.getEditText().getText().toString().isEmpty()) {
-          mNricFin.setError("NRIC/FIN is empty!");
-          return;
-        }
-
-        if (mNricFin.getEditText().getText().length() != 9) {
-          mNricFin.setError("NRIC/FIN is invalid!");
-          return;
-        }
-
-        if (
-          !NRICService.checkNRIC(
-            mNricFin.getEditText()
-              .getText()
-              .toString()
-              .toUpperCase()
-          )
-        ) {
-          mNricFin.setError("NRIC/FIN is invalid!");
-          return;
-        }
-
-        /*
-         * Reset the error message
-         */
-        mNricFin.setError(null);
-
-        if (mFullName.getEditText().getText().toString().isEmpty()) {
-          mFullName.setError("Full Name is empty!");
-          return;
-        }
-
-        /*
-         * Reset the error message
-         */
-        mFullName.setError(null);
-
-        if (mContactNumber.getEditText().getText().toString().isEmpty()) {
-          mContactNumber.setError("Contact Number is empty!");
-          return;
-        }
-
-        /*
-         * Reset the error message
-         */
-        mContactNumber.setError(null);
-
-        /*
-         * Create the user data structure
-         */
-        User user = new User();
-        user.put(User.UID, FirebaseService.getCurrentUser().getUid());
-        user.put(User.NRIC_FIN_PPT, mNricFin.getEditText().getText().toString().toUpperCase());
-        user.put(User.FULL_NAME, mFullName.getEditText().getText().toString().toUpperCase());
-        user.put(User.CONTACT_NUMBER, mContactNumber.getEditText().getText().toString());
-        user.put(User.COUNTRY_NAME, mCountry.getSelectedItem());
-        user.put(User.FCM_TOKENS, FieldValue.arrayUnion(FCMService.getFCMToken(SetupActivity.this)));
-
-        /*
-         * Subscribe user to ALL_USERS topic for global application
-         * broadcast.
-         */
-        FCMService.subscribeToTopic("ALL_USERS")
-          .addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-              if (!task.isSuccessful()) {
-                showToast("Failed to subscribe to ALL_USERS topic!");
-              }
-
-              showToast("Successfully subscribed to ALL_USERS topic!");
-            }
-          });
-
-        /*
-         * Subscribe user to country topic
-         *
-         * TODO: Replace "SINGAPORE" with actual countries
-         */
-        FCMService.subscribeToTopic("SINGAPORE")
-          .addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-              if (!task.isSuccessful()) {
-                showToast("Failed to subscribe to topic!");
-              }
-
-              showToast("Successfully subscribed to topic!");
-            }
-          });
-
-        /*
-         * Upload the data into Firestore
-         */
-        FirebaseService
-          .setUsersCollection(
-            FirebaseService.getCurrentUser().getUid(),
-            user.retrieve()
-          )
-          .addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-              showToast("Successfully updated your profile.");
-
-              PreferencesService
-                .setBooleanKey(
-                  PreferencesService.SETUP_COMPLETED_KEY,
-                  true
-                );
-
-              startActivity(HomeActivity.createIntent(SetupActivity.this));
-              finish();
-            }
-          })
-          .addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-              showToast("Failed to update your profile.");
-
-              Log.e(TAG, "Error Occurred: " + e.getMessage());
-            }
-          });
-      }
-    });
-  }
-
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_setup);
+
+    mPreferences = getSharedPreferences(
+      PreferencesService.GLOBAL_PREFERENCES,
+      MODE_PRIVATE
+    );
+
     String[] aCountries = new String[]{
       "Afghanistan",
       "Albania",
@@ -385,12 +267,12 @@ public class SetupActivity extends AppCompatActivity {
       "Zambia",
       "Zimbabwe"
     };
+
     mCountry = (Spinner) findViewById(R.id.residency);
     ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
       android.R.layout.simple_spinner_item, aCountries);
     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
     mCountry.setAdapter(adapter);
-
 
     // TODO: add into firebase
     CountryCodePicker ccp = (CountryCodePicker) findViewById(R.id.ccp);
@@ -398,7 +280,10 @@ public class SetupActivity extends AppCompatActivity {
     /*
      * SharedPreferences: Reset Key
      */
-    PreferencesService.setBooleanKey(PreferencesService.SETUP_COMPLETED_KEY, false);
+    mPreferences
+      .edit()
+      .putBoolean(PreferencesService.SETUP_COMPLETED_KEY, false)
+      .apply();
 
     /*
      * Android: Linking variables to layout ids
@@ -425,5 +310,134 @@ public class SetupActivity extends AppCompatActivity {
      * Android: Listen for onClick events
      */
     listenForOnClick();
+  }
+
+  private void listenForOnClick() {
+    mContinue.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        if (mNricFin.getEditText().getText().toString().isEmpty()) {
+          mNricFin.setError("NRIC/FIN is empty!");
+          return;
+        }
+
+        if (mNricFin.getEditText().getText().length() != 9) {
+          mNricFin.setError("NRIC/FIN is invalid!");
+          return;
+        }
+
+        if (
+          !NRICService.checkNRIC(
+            mNricFin.getEditText()
+              .getText()
+              .toString()
+              .toUpperCase()
+          )
+        ) {
+          mNricFin.setError("NRIC/FIN is invalid!");
+          return;
+        }
+
+        /*
+         * Reset the error message
+         */
+        mNricFin.setError(null);
+
+        if (mFullName.getEditText().getText().toString().isEmpty()) {
+          mFullName.setError("Full Name is empty!");
+          return;
+        }
+
+        /*
+         * Reset the error message
+         */
+        mFullName.setError(null);
+
+        if (mContactNumber.getEditText().getText().toString().isEmpty()) {
+          mContactNumber.setError("Contact Number is empty!");
+          return;
+        }
+
+        /*
+         * Reset the error message
+         */
+        mContactNumber.setError(null);
+
+        /*
+         * Create the user data structure
+         */
+        User user = new User();
+        user.put(User.UID, FirebaseService.getCurrentUser().getUid());
+        user.put(User.NRIC_FIN_PPT, mNricFin.getEditText().getText().toString().toUpperCase());
+        user.put(User.FULL_NAME, mFullName.getEditText().getText().toString().toUpperCase());
+        user.put(User.CONTACT_NUMBER, mContactNumber.getEditText().getText().toString());
+        user.put(User.COUNTRY_NAME, mCountry.getSelectedItem());
+        user.put(User.FCM_TOKENS, FieldValue.arrayUnion(FCMService.getFCMToken(SetupActivity.this)));
+
+        /*
+         * Subscribe user to ALL_USERS topic for global application
+         * broadcast.
+         */
+        FCMService.subscribeToTopic("ALL_USERS")
+          .addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+              if (!task.isSuccessful()) {
+                showToast("Failed to subscribe to ALL_USERS topic!");
+              }
+
+              showToast("Successfully subscribed to ALL_USERS topic!");
+            }
+          });
+
+        /*
+         * Subscribe user to country topic
+         *
+         * TODO: Replace "SINGAPORE" with actual countries
+         */
+        FCMService.subscribeToTopic("SINGAPORE")
+          .addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+              if (!task.isSuccessful()) {
+                showToast("Failed to subscribe to topic!");
+              }
+
+              showToast("Successfully subscribed to topic!");
+            }
+          });
+
+        /*
+         * Upload the data into Firestore
+         */
+        FirebaseService
+          .setUsersCollection(
+            FirebaseService.getCurrentUser().getUid(),
+            user.retrieve()
+          )
+          .addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+              showToast("Successfully updated your profile.");
+
+              mPreferences
+                .edit()
+                .putBoolean(PreferencesService.SETUP_COMPLETED_KEY, true)
+                .apply();
+
+              startActivity(HomeActivity.createIntent(SetupActivity.this));
+              finish();
+            }
+          })
+          .addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+              showToast("Failed to update your profile.");
+
+              Log.e(TAG, "Error Occurred: " + e.getMessage());
+            }
+          });
+      }
+    });
   }
 }

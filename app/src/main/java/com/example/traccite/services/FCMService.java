@@ -26,9 +26,9 @@ public class FCMService extends FirebaseMessagingService {
     super.onNewToken(token);
     Log.d(TAG, "Token Refreshed: " + token);
 
-    getSharedPreferences(AppTraCCite.GLOBAL_PREFS, MODE_PRIVATE)
+    getSharedPreferences(PreferencesService.GLOBAL_PREFERENCES, MODE_PRIVATE)
       .edit()
-      .putString(AppTraCCite.FCM_TOKEN_KEY, token)
+      .putString(PreferencesService.FCM_TOKEN_KEY, token)
       .apply();
   }
 
@@ -50,8 +50,8 @@ public class FCMService extends FirebaseMessagingService {
    */
   public static String getFCMToken(Context context) {
     return context
-      .getSharedPreferences(AppTraCCite.GLOBAL_PREFS, MODE_PRIVATE)
-      .getString(AppTraCCite.FCM_TOKEN_KEY, null);
+      .getSharedPreferences(PreferencesService.GLOBAL_PREFERENCES, MODE_PRIVATE)
+      .getString(PreferencesService.FCM_TOKEN_KEY, null);
   }
 
   /*
@@ -68,9 +68,9 @@ public class FCMService extends FirebaseMessagingService {
           Log.i(TAG, "Successfully retrieved FCM token: " + task.getResult().getToken());
 
           context
-            .getSharedPreferences(AppTraCCite.GLOBAL_PREFS, MODE_PRIVATE)
+            .getSharedPreferences(PreferencesService.GLOBAL_PREFERENCES, MODE_PRIVATE)
             .edit()
-            .putString(AppTraCCite.FCM_TOKEN_KEY, task.getResult().getToken())
+            .putString(PreferencesService.FCM_TOKEN_KEY, task.getResult().getToken())
             .apply();
         }
       })
