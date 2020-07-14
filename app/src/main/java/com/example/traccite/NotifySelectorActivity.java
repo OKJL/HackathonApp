@@ -69,15 +69,19 @@ public class NotifySelectorActivity
     switch ((int) sSelectionIndex) {
       case 0:
         Log.i(TAG, "You selected ALL_USERS");
+        startActivity(NotifyEveryoneActivity.createIntent(this));
         break;
       case 1:
         Log.i(TAG, "You selected COUNTRY_NAME");
+        startActivity(NotifyCountryActivity.createIntent(this));
         break;
       case 2:
         Log.i(TAG, "You selected TIMEFRAME_RANGE");
+        startActivity(NotifyTimeframeActivity.createIntent(this));
         break;
       case 3:
         Log.i(TAG, "You selected SPECIFIC_USER");
+        startActivity(NotifySpecificUserActivity.createIntent(this));
         break;
       default:
         break;

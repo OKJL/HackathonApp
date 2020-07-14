@@ -16,6 +16,10 @@
     android:roundIcon="@mipmap/ic_launcher_round"
     android:supportsRtl="true"
     android:theme="@style/AppTheme">
+    <activity android:name=".NotifySpecificUserActivity"></activity>
+    <activity android:name=".NotifyTimeframeActivity" />
+    <activity android:name=".NotifyCountryActivity" />
+    <activity android:name=".NotifyEveryoneActivity" />
     <activity
       android:name=".NotifySelectorActivity"
       android:configChanges="orientation|keyboardHidden"
