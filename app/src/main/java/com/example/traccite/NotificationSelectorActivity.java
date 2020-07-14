@@ -10,19 +10,19 @@ import android.widget.AutoCompleteTextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class SendNotificationActivity extends AppCompatActivity {
+public class NotificationSelectorActivity extends AppCompatActivity {
 
   private AutoCompleteTextView mDropdownMenu;
 
   @NonNull
   public static Intent createIntent(@NonNull Context context) {
-    return new Intent(context, SendNotificationActivity.class);
+    return new Intent(context, NotificationSelectorActivity.class);
   }
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_send_notification);
+    setContentView(R.layout.activity_notification_selector);
 
     mDropdownMenu = findViewById(R.id.notification_type_dropdown);
 
