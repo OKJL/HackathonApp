@@ -17,7 +17,7 @@
     android:supportsRtl="true"
     android:theme="@style/AppTheme">
     <activity
-      android:name=".NotificationSelectorActivity"
+      android:name=".NotifySelectorActivity"
       android:configChanges="orientation|keyboardHidden"
       android:screenOrientation="portrait" />
     <activity android:name=".AdminActivity" />

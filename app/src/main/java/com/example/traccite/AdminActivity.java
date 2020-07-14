@@ -36,7 +36,7 @@ public class AdminActivity extends AppCompatActivity {
     mSendNotification.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        startActivity(NotificationSelectorActivity.createIntent(AdminActivity.this));
+        startActivity(NotifySelectorActivity.createIntent(AdminActivity.this));
       }
     });
 
