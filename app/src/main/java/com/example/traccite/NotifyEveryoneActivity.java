@@ -85,13 +85,8 @@ public class NotifyEveryoneActivity
       .addOnSuccessListener(new OnSuccessListener<Void>() {
         @Override
         public void onSuccess(Void aVoid) {
-          Toast.makeText(
-            getApplicationContext(),
-            "Successfully sent notification",
-            Toast.LENGTH_LONG
-          ).show();
-
-          finish();
+          startActivity(NotifySuccessActivity.createIntent(NotifyEveryoneActivity.this));
+          finishAffinity();
         }
       })
       .addOnFailureListener(new OnFailureListener() {

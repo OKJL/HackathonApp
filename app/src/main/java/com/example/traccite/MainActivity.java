@@ -15,8 +15,6 @@ import com.example.traccite.services.FirebaseService;
 import com.example.traccite.services.PreferencesService;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Arrays;
 import java.util.List;
@@ -27,27 +25,23 @@ public class MainActivity extends AppCompatActivity {
    * Logcat: Logging Tag
    */
   private static final String TAG = "MainActivity";
-
-  /*
-   * SharedPreference: Current Instance
-   */
-  private static SharedPreferences mPreferences;
-
   /*
    * Firebase: Arbitrary Request Code
    */
   private static final int RC_SIGN_IN = 1422;
-
   /*
    * Firebase: Phone Auth Default Number
    */
   private static final String DEFAULT_NUMBER = "+6531235617";
-
   /*
    * Firebase: Privacy Policy & Terms Of Service
    */
   private static final String TOS_URL = "https://google.com";
   private static final String PRIVACY_POLICY_URL = "https://ite.edu.sg";
+  /*
+   * SharedPreference: Current Instance
+   */
+  private static SharedPreferences mPreferences;
 
   @NonNull
   public static Intent createIntent(@NonNull Context context) {

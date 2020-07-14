@@ -4,7 +4,7 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  tools:context=".NotifySelectorActivity">
+  tools:context=".NotifySuccessActivity">
 
   <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
@@ -18,11 +18,10 @@
       android:layout_marginStart="48dp"
       android:layout_marginEnd="48dp"
       android:adjustViewBounds="true"
-      app:layout_constraintBottom_toTopOf="@+id/title_message"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
-      app:srcCompat="@drawable/ic_notification" />
+      app:srcCompat="@drawable/ic_tick" />
 
     <TextView
       android:id="@+id/title_message"
@@ -32,7 +31,7 @@
       android:layout_marginStart="32dp"
       android:layout_marginTop="16dp"
       android:layout_marginEnd="32dp"
-      android:text="Before we continue..."
+      android:text="Success!"
       android:textAlignment="center"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
@@ -46,33 +45,14 @@
       android:layout_marginStart="32dp"
       android:layout_marginTop="8dp"
       android:layout_marginEnd="32dp"
-      android:text="Please select the notification type"
+      android:text="Notification was sent successfully. Please give it a few minutes to arrive."
       android:textAlignment="center"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@+id/title_message" />
 
-    <com.google.android.material.textfield.TextInputLayout
-      android:id="@+id/dropdown_menu"
-      style="@style/Widget.AppTheme.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-      android:layout_width="0dp"
-      android:layout_height="wrap_content"
-      android:layout_marginStart="48dp"
-      android:layout_marginTop="24dp"
-      android:layout_marginEnd="48dp"
-      android:hint="Notification Type"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/subtitle_message">
-
-      <com.google.android.material.textfield.MaterialAutoCompleteTextView
-        android:id="@+id/notification_type_dropdown"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-    </com.google.android.material.textfield.TextInputLayout>
-
     <Button
-      android:id="@+id/button_continue"
+      android:id="@+id/btn_return"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_marginStart="48dp"
@@ -80,11 +60,10 @@
       android:layout_marginEnd="48dp"
       android:layout_marginBottom="32dp"
       android:backgroundTint="@color/blue"
-      android:text="Continue"
-      android:textColor="@color/white"
+      android:text="Return Home"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/dropdown_menu" />
+      app:layout_constraintTop_toBottomOf="@+id/subtitle_message" />
   </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
