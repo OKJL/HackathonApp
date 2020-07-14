@@ -57,12 +57,22 @@ public class FirebaseService extends Application {
     return mDb.collection("users");
   }
 
+  public static CollectionReference getNotifiersCollection() {
+    return mDb.collection("notifiers");
+  }
+
   /*
    * Set data into the users collection
    */
-  public static Task<Void> setUsersCollection(String doc, Map data) {
+  public static Task<Void> setUsersCollection(String doc, Map<String, Object> data) {
     return getUsersCollection()
       .document(doc)
+      .set(data, SetOptions.merge());
+  }
+
+  public static Task<Void> sendNotification(Map<String, Object> data) {
+    return getNotifiersCollection()
+      .document()
       .set(data, SetOptions.merge());
   }
 }

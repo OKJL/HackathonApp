@@ -1,3 +1,9 @@
 <resources>
   <string name="app_name">TraCCite</string>
+
+  <string name="notification_everyone">
+    By pressing the Send Notification button, you are sending a notification
+    toward every single user that has installed and completed their setup
+    process for this app. Please be sure of your doings before proceeding.
+  </string>
 </resources>
