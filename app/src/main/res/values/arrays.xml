@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string-array name="notification_type">
+    <item>All Users</item>
+    <item>Country Name</item>
+    <item>Timeframe Range</item>
+    <item>Specific User</item>
+  </string-array>
+</resources>

@@ -1,17 +1,17 @@
 package com.example.traccite;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 public class AdminActivity extends AppCompatActivity {
-  Button btnFCM;
-  Button btnBluetooth;
+  private Button mRegisterBeacons;
+  private Button mSendNotification;
 
   @NonNull
   public static Intent createIntent(@NonNull Context context) {
@@ -23,18 +23,35 @@ public class AdminActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_admin);
 
-    btnFCM.setOnClickListener(new View.OnClickListener(){
+    mRegisterBeacons = findViewById(R.id.register_beacons);
+    mSendNotification = findViewById(R.id.send_notification);
+
+    mRegisterBeacons.setOnClickListener(new View.OnClickListener() {
       @Override
-      public void onClick(View v) {
-        // TODO: Go the FCM page
+      public void onClick(View view) {
+
       }
     });
 
-    btnBluetooth.setOnClickListener(new View.OnClickListener() {
+    mSendNotification.setOnClickListener(new View.OnClickListener() {
       @Override
-      public void onClick(View v) {
-        // TODO: GO to "Create Beacon Page
+      public void onClick(View view) {
+        startActivity(SendNotificationActivity.createIntent(AdminActivity.this));
       }
     });
+
+//    btnFCM.setOnClickListener(new View.OnClickListener(){
+//      @Override
+//      public void onClick(View v) {
+//        // TODO: Go the FCM page
+//      }
+//    });
+//
+//    btnBluetooth.setOnClickListener(new View.OnClickListener() {
+//      @Override
+//      public void onClick(View v) {
+//        // TODO: GO to "Create Beacon Page
+//      }
+//    });
   }
 }

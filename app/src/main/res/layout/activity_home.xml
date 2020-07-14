@@ -20,10 +20,18 @@
     android:textColor="@color/white" />
 
   <Button
-    android:id="@+id/sign_out_button"
+    android:id="@+id/admin_button"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="20dp"
+    android:backgroundTint="@color/orange"
+    android:text="Admin Activity" />
+
+  <Button
+    android:id="@+id/sign_out_button"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="5dp"
     android:backgroundTint="@color/indigo"
     android:text="Sign Out" />
 

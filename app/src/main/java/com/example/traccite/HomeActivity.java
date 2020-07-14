@@ -32,6 +32,7 @@ public class HomeActivity extends AppCompatActivity {
    * Android: From Layout
    */
   private Button mSignOut;
+  private Button mAdminActivity;
 
   @NonNull
   public static Intent createIntent(@NonNull Context context) {
@@ -72,6 +73,15 @@ public class HomeActivity extends AppCompatActivity {
     });
   }
 
+  private void listenForAdminActivity() {
+    mAdminActivity.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        startActivity(AdminActivity.createIntent(HomeActivity.this));
+      }
+    });
+  }
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -91,11 +101,13 @@ public class HomeActivity extends AppCompatActivity {
      * Link variables to layout ids
      */
     mSignOut = findViewById(R.id.sign_out_button);
+    mAdminActivity = findViewById(R.id.admin_button);
 
     /*
-     * Listen for onClick in signOutButton
+     * Listen for onClick events
      */
     listenForSignOut();
+    listenForAdminActivity();
 
     // Get permissions
     final BluetoothAdapter BluetoothAdapter = android.bluetooth.BluetoothAdapter.getDefaultAdapter();

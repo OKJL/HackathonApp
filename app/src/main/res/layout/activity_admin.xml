@@ -1,51 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  android:orientation="vertical"
   android:background="@drawable/bgadmin"
+  android:orientation="vertical"
+  android:padding="20dp"
   tools:context=".AdminActivity">
+
+  <TextView
+    style="@style/AppTheme.HeaderStyle"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Admin Dashboard"
+    android:textColor="@color/white" />
 
   <LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="480dp"
-    android:orientation="vertical"
-    android:padding="20dp">
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="horizontal">
 
-    <LinearLayout
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:orientation="vertical"
-      android:padding="20dp">
+    <Button
+      android:id="@+id/send_notification"
+      android:layout_width="0dp"
+      android:layout_height="match_parent"
+      android:layout_margin="5dp"
+      android:layout_weight="1"
+      android:text="Send Notification" />
 
-      <TextView
-        android:layout_width="342dp"
-        android:layout_height="77dp"
-        android:gravity="center"
-        android:text="Admin DashBoard"
-        android:textColor="@color/yellow"
-        android:textSize="30dp" />
-    </LinearLayout>
-
-    <LinearLayout
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content">
-
-      <Button
-        android:layout_width="172dp"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="Send FCM"
-        android:textSize="30dp"/>
-
-      <Button
-        android:layout_width="172dp"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="Create Beacon"
-        android:textSize="30dp" />
-    </LinearLayout>
+    <Button
+      android:id="@+id/register_beacons"
+      android:layout_width="0dp"
+      android:layout_height="match_parent"
+      android:layout_margin="5dp"
+      android:layout_weight="1"
+      android:text="Register Beacons" />
   </LinearLayout>
 </LinearLayout>

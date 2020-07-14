@@ -5,8 +5,8 @@
   <uses-permission android:name="android.permission.BLUETOOTH" />
   <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
   <uses-permission android:name="android.permission.INTERNET" />
-  <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-  <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+  <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+  <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
   <application
     android:name=".AppTraCCite"
@@ -16,7 +16,8 @@
     android:roundIcon="@mipmap/ic_launcher_round"
     android:supportsRtl="true"
     android:theme="@style/AppTheme">
-    <activity android:name=".AdminActivity"></activity>
+    <activity android:name=".SendNotificationActivity"></activity>
+    <activity android:name=".AdminActivity" />
     <activity android:name=".SetupActivity" />
     <activity android:name=".HomeActivity" />
     <activity android:name=".MainActivity">
