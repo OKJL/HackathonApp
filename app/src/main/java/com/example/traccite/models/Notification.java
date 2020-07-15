@@ -3,6 +3,8 @@ package com.example.traccite.models;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringDef;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.HashMap;
 
 public class Notification extends HashMap<String, Object> {
@@ -25,6 +27,7 @@ public class Notification extends HashMap<String, Object> {
     return super.put(key, value);
   }
 
+  @Retention(RetentionPolicy.SOURCE)
   @StringDef({
     MESSAGE_TITLE,
     MESSAGE_BODY,
@@ -35,6 +38,7 @@ public class Notification extends HashMap<String, Object> {
   public @interface NotificationKeyDef {
   }
 
+  @Retention(RetentionPolicy.SOURCE)
   @StringDef({
     NOTIFY_TYPE_EVERYONE,
     NOTIFY_TYPE_COUNTRY_NAME,
