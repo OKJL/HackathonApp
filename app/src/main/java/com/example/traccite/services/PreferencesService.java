@@ -1,8 +1,6 @@
 package com.example.traccite.services;
 
-import android.app.Application;
-
-public class PreferencesService extends Application {
+public class PreferencesService {
 
   /*
    * SharedPreferences: All Preference Keys
