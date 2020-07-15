@@ -17,7 +17,7 @@
 
   <!--  Page Header Styles -->
   <style name="AppTheme.HeaderStyle">
-    <item name="android:textSize">25dp</item>
+    <item name="android:textSize">25sp</item>
     <item name="android:textStyle">bold</item>
     <item name="android:textColor">@color/gray700</item>
     <item name="android:layout_width">match_parent</item>
@@ -26,7 +26,7 @@
   </style>
 
   <style name="AppTheme.SubHeaderStyle">
-    <item name="android:textSize">15dp</item>
+    <item name="android:textSize">15sp</item>
     <item name="android:textStyle">normal</item>
     <item name="android:textColor">@color/gray500</item>
     <item name="android:layout_width">match_parent</item>
@@ -36,8 +36,8 @@
 
   <!--  Material Theme -->
   <style name="Widget.AppTheme.TextInputLayout.OutlinedBox" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-    <item name="endIconMode">clear_text</item>
     <item name="errorEnabled">true</item>
+    <item name="endIconMode">clear_text</item>
     <item name="hintTextColor">@color/blue</item>
     <item name="errorTextColor">@color/red</item>
     <item name="boxStrokeColor">@color/blue</item>
@@ -46,6 +46,8 @@
   </style>
 
   <style name="Widget.AppTheme.TextInputLayout.OutlinedBox.ExposedDropdownMenu" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+    <item name="errorEnabled">true</item>
+    <item name="errorTextColor">@color/red</item>
     <item name="hintTextColor">@color/blue</item>
     <item name="boxStrokeColor">@color/blue</item>
   </style>

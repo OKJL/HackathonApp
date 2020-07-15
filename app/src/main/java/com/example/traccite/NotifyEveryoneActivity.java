@@ -73,8 +73,6 @@ public class NotifyEveryoneActivity
 
     mMessageBody.setError(null);
 
-    Toast.makeText(this, "Sending...", Toast.LENGTH_LONG).show();
-
     Notification notification = new Notification();
     notification.put(Notification.MESSAGE_TITLE, mMessageTitle.getEditText().getText().toString().toUpperCase().trim());
     notification.put(Notification.MESSAGE_BODY, mMessageBody.getEditText().getText().toString().trim());
