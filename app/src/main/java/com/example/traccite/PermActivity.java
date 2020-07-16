@@ -27,7 +27,7 @@ public class PermActivity extends AppCompatActivity {
     setContentView(R.layout.activity_perm);
     ContinueBtn = findViewById(R.id.ContinueBtn);
 
-    // Get permissions
+//     Get permissions
     final BluetoothAdapter BluetoothAdapter = android.bluetooth.BluetoothAdapter.getDefaultAdapter();
     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
     if (BluetoothAdapter == null) {
