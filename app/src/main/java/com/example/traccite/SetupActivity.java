@@ -224,7 +224,7 @@ public class SetupActivity extends AppCompatActivity {
                 .putBoolean(PreferencesService.SETUP_COMPLETED_KEY, true)
                 .apply();
 
-              startActivity(HomeActivity.createIntent(SetupActivity.this));
+              startActivity(PermActivity.createIntent(SetupActivity.this));
               finish();
             }
           })
