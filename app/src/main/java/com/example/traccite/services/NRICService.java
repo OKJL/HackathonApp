@@ -1,8 +1,6 @@
 package com.example.traccite.services;
 
-import android.app.Application;
-
-public class NRICService extends Application {
+public class NRICService {
   /*
    * checkNRICForValidity checks the given NRIC number with
    * Singapore Government's NRIC hashing algorithm (private).

@@ -1,7 +1,5 @@
 package com.example.traccite.services;
 
-import android.app.Application;
-
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -11,7 +9,7 @@ import com.google.firebase.firestore.SetOptions;
 
 import java.util.Map;
 
-public class FirebaseService extends Application {
+public class FirebaseService {
 
   /*
    * Logcat: Logging Tag
