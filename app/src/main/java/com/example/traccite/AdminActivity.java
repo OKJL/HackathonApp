@@ -29,7 +29,7 @@ public class AdminActivity extends AppCompatActivity {
     mRegisterBeacons.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-
+        startActivity(BeaconActivity.createIntent(AdminActivity.this));
       }
     });
 
