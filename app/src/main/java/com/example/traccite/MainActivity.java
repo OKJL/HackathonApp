@@ -15,6 +15,7 @@ import com.example.traccite.services.FirebaseService;
 import com.example.traccite.services.PreferencesService;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
+import com.google.firebase.BuildConfig;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
