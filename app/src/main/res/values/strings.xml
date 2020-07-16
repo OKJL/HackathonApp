@@ -1,6 +1,10 @@
 <resources>
   <string name="app_name">TraCCite</string>
 
+  <string name="compose_message">Compose Message</string>
+
+  <string name="send_notification">Send Notification</string>
+
   <string name="notification_everyone">
     By pressing the Send Notification button, you are sending a notification
     toward every single user that has installed and completed their setup
