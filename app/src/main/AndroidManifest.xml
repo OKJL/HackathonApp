@@ -5,8 +5,6 @@
   <uses-permission android:name="android.permission.BLUETOOTH" />
   <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
   <uses-permission android:name="android.permission.INTERNET" />
-  <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-  <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
   <application
     android:name=".AppTraCCite"
@@ -24,7 +22,8 @@
     <activity android:name=".NotifySuccessActivity" />
     <activity android:name=".NotifyTimeframeActivity" />
 
-    <activity android:name=".PermActivity" />
+    <activity
+      android:name=".PermActivity" />
     <activity android:name=".AdminActivity" />
     <activity android:name=".SetupActivity" />
     <activity android:name=".HomeActivity" />

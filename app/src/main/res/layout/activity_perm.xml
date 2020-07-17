@@ -1,46 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   tools:context=".PermActivity">
 
-  <Button
-    android:id="@+id/ContinueBtn"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="146dp"
-    android:layout_marginTop="517dp"
-    android:layout_marginEnd="147dp"
-    android:layout_marginBottom="167dp"
-    android:text="Continue"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent" />
-
   <androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="410dp"
-    android:layout_height="63dp"
-    android:layout_marginStart="1dp"
-    android:layout_marginTop="3dp"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent">
+    android:layout_gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
-    <TextView
-      android:id="@+id/textView"
-      android:layout_width="92dp"
-      android:layout_height="34dp"
-      android:layout_marginStart="158dp"
-      android:layout_marginTop="13dp"
-      android:layout_marginEnd="160dp"
-      android:layout_marginBottom="16dp"
-      android:text="Permissions"
-      app:layout_constraintBottom_toBottomOf="parent"
+    <ImageView
+      android:id="@+id/svg_graphics"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="32dp"
+      android:layout_marginTop="32dp"
+      android:layout_marginEnd="32dp"
+      android:adjustViewBounds="true"
+      android:contentDescription="Graphics"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent" />
+      app:layout_constraintTop_toTopOf="parent"
+      app:srcCompat="@drawable/ic_bluetooth" />
+
+    <TextView
+      android:id="@+id/txt_title"
+      style="@style/AppTheme.HeaderStyle"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="32dp"
+      android:layout_marginTop="32dp"
+      android:layout_marginEnd="32dp"
+      android:text="We Need Permissions"
+      android:textAlignment="center"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/svg_graphics" />
+
+    <TextView
+      android:id="@+id/txt_subtitle"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="32dp"
+      android:layout_marginTop="8dp"
+      android:layout_marginEnd="32dp"
+      android:text="In order for the application to work properly, we will need some permissions from you"
+      android:textAlignment="center"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/txt_title" />
+
+    <Button
+      android:id="@+id/btn_request_permission"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="16dp"
+      android:text="Request Permissions"
+      android:backgroundTint="@color/blue"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/txt_subtitle" />
   </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

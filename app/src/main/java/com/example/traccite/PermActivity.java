@@ -1,9 +1,5 @@
 package com.example.traccite;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -12,9 +8,21 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-public class PermActivity extends AppCompatActivity {
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+
+public class PermActivity
+  extends AppCompatActivity
+  implements View.OnClickListener {
+  private static final BluetoothAdapter BLUETOOTH_ADAPTER =
+    android.bluetooth.BluetoothAdapter.getDefaultAdapter();
+
+  private static AlertDialog.Builder mDialog;
+
   int REQUEST_ENABLE_BT = 0;
-  private Button ContinueBtn;
+  private Button requestPermissionBtn;
 
   @NonNull
   public static Intent createIntent(@NonNull Context context) {
@@ -22,39 +30,66 @@ public class PermActivity extends AppCompatActivity {
   }
 
   @Override
+  protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
+
+    if (requestCode == REQUEST_ENABLE_BT) {
+      if (resultCode == RESULT_OK) {
+        startActivity(HomeActivity.createIntent(this));
+        finishAffinity();
+      }
+    }
+  }
+
+  @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_perm);
-    ContinueBtn = findViewById(R.id.ContinueBtn);
 
-//     Get permissions
-    final BluetoothAdapter BluetoothAdapter = android.bluetooth.BluetoothAdapter.getDefaultAdapter();
-    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-    if (BluetoothAdapter == null) {
-      // Phone does not support bluetooth
-      alertDialogBuilder.setTitle("Device not supported!");
-      alertDialogBuilder.setMessage("Your Phone does not support bluetooth!");
-      alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+    mDialog = new AlertDialog.Builder(this);
+
+    requestPermissionBtn = findViewById(R.id.btn_request_permission);
+    requestPermissionBtn.setOnClickListener(this);
+
+    mDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+      @Override
+      public void onCancel(DialogInterface dialogInterface) {
+        finishAffinity();
+        System.exit(0);
+      }
+    });
+
+    if (BLUETOOTH_ADAPTER == null) {
+      mDialog.setCancelable(false);
+      mDialog.setTitle("Device Not Supported!");
+      mDialog.setMessage("Your device does not support Bluetooth!");
+      mDialog.setPositiveButton("EXIT", new DialogInterface.OnClickListener() {
         @Override
-        public void onClick(DialogInterface dialog, int which) {
-          // exit the app
-          finish();
+        public void onClick(DialogInterface dialogInterface, int i) {
+          finishAffinity();
           System.exit(0);
         }
       });
-      AlertDialog alertDialog = alertDialogBuilder.create();
-      alertDialog.show();
-    } else {
-      if (!BluetoothAdapter.isEnabled()) {
-        Intent itEnableBluetooth = new Intent(android.bluetooth.BluetoothAdapter.ACTION_REQUEST_ENABLE);
-        startActivityForResult(itEnableBluetooth, REQUEST_ENABLE_BT);
-      }
+
+      mDialog.show();
+
+      return;
     }
-    ContinueBtn.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        startActivity(HomeActivity.createIntent(PermActivity.this));
-      }
-    });
+
+    if (!BLUETOOTH_ADAPTER.isEnabled()) requestBluetoothEnable();
+    else {
+      startActivity(HomeActivity.createIntent(this));
+      finishAffinity();
+    }
+  }
+
+  private void requestBluetoothEnable() {
+    Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+    startActivityForResult(intent, REQUEST_ENABLE_BT);
+  }
+
+  @Override
+  public void onClick(View view) {
+    requestBluetoothEnable();
   }
 }
