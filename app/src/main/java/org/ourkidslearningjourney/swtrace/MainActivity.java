@@ -50,19 +50,12 @@ public class MainActivity
   @Override
   protected void onStart() {
     super.onStart();
-
     FirebaseAuth.getInstance().addAuthStateListener(this);
   }
 
   @Override
-  protected void onStop() {
-    super.onStop();
-    FirebaseAuth.getInstance().removeAuthStateListener(this);
-  }
-
-  @Override
   public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-    if (firebaseAuth.getCurrentUser() == null) {
+    if (FirebaseService.getCurrentUser() == null) {
       createSignInIntent();
       return;
     }
@@ -80,12 +73,11 @@ public class MainActivity
 
       if (resultCode == RESULT_OK) {
         Log.i(TAG, "Signed In As: " + response.getPhoneNumber());
-
-        Toast.makeText(this, "Confirmed Success", Toast.LENGTH_LONG).show();
         return;
       }
 
       Toast.makeText(this, "Failed To Sign In", Toast.LENGTH_LONG).show();
+      Log.e(TAG, "Failed To Sign In");
     }
   }
 

@@ -22,6 +22,10 @@ public class FirebaseService {
     sDb = FirebaseFirestore.getInstance();
   }
 
+  public static void signOut() {
+    sUser.signOut();
+  }
+
   public static FirebaseUser getCurrentUser() {
     return sUser.getCurrentUser();
   }

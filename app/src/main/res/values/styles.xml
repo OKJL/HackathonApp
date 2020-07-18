@@ -11,7 +11,7 @@
   </style>
 
   <style name="SWTrace.TitleStyle" parent="android:TextAppearance">
-    <item name="android:textSize">40sp</item>
+    <item name="android:textSize">35sp</item>
     <item name="android:textColor">@color/gray700</item>
     <item name="fontFamily">@font/montserrat_bold</item>
     <item name="android:fontFamily">@font/montserrat_bold</item>
