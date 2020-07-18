@@ -1,3 +1,7 @@
 <resources>
   <string name="app_name">SWTrace</string>
+  <string name="app_description">A dead-simple application for contact tracing possibly infected persons on-the-go.</string>
+
+  <string name="ite_logo">ITE Logo</string>
+  <string name="from_ite">From ITE College Central</string>
 </resources>
