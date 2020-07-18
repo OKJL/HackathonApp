@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
 
     if (FirebaseService.getCurrentUser() == null) {
       createSignInIntent();
+      return;
     }
   }
 
@@ -59,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
         Log.i(TAG, "Signed In As: " + response.getPhoneNumber());
 
         Toast.makeText(this, "Confirmed Success", Toast.LENGTH_LONG).show();
-
         return;
       }
 
@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
       AuthUI.getInstance()
         .createSignInIntentBuilder()
         .setAvailableProviders(providers)
-        .setLogo(R.drawable.common_google_signin_btn_icon_dark_focused)
+        .setLogo(R.mipmap.ic_launcher)
         .setTheme(R.style.AuthTheme)
         .setTosAndPrivacyPolicyUrls(TOS_URL, PRIVACY_POLICY_URL)
         .setIsSmartLockEnabled(!BuildConfig.DEBUG)
