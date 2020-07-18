@@ -6,11 +6,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
+import com.google.firebase.auth.FirebaseAuth;
 
 import org.ourkidslearningjourney.swtrace.services.FirebaseService;
 import org.ourkidslearningjourney.swtrace.services.PreferencesService;
@@ -18,9 +20,10 @@ import org.ourkidslearningjourney.swtrace.services.PreferencesService;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity
+  extends AppCompatActivity
+  implements FirebaseAuth.AuthStateListener {
 
   private static final String TAG = "MainActivity";
 
@@ -42,11 +45,30 @@ public class MainActivity extends AppCompatActivity {
       PreferencesService.GLOBAL_PREFERENCES,
       MODE_PRIVATE
     );
+  }
 
-    if (FirebaseService.getCurrentUser() == null) {
+  @Override
+  protected void onStart() {
+    super.onStart();
+
+    FirebaseAuth.getInstance().addAuthStateListener(this);
+  }
+
+  @Override
+  protected void onStop() {
+    super.onStop();
+    FirebaseAuth.getInstance().removeAuthStateListener(this);
+  }
+
+  @Override
+  public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+    if (firebaseAuth.getCurrentUser() == null) {
       createSignInIntent();
       return;
     }
+
+    startActivity(HomeActivity.createIntent(this));
+    finishAffinity();
   }
 
   @Override
