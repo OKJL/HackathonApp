@@ -52,6 +52,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "1048621489000-1n67ckampktg38chvdfeor2ma0ukelu5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "org.ourkidslearningjourney.swtrace",
+            "certificate_hash": "fe7265775138181ad7dae3491e04c84f31f4d7d0"
+          }
+        },
+        {
           "client_id": "1048621489000-mrldqp9jfjlfqm6lgashhh8kjh0iv58g.apps.googleusercontent.com",
           "client_type": 3
         }
