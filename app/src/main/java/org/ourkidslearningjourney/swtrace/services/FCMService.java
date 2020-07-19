@@ -15,16 +15,19 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import org.jetbrains.annotations.NotNull;
+
 public class FCMService extends FirebaseMessagingService {
   private static final String TAG = "FCMService";
 
-  public static Task<Void> subscribeToTopic(String topic) {
+  @NotNull
+  public static Task<Void> subscribeToTopic(@NotNull String topic) {
     return FirebaseMessaging
       .getInstance()
       .subscribeToTopic(topic.toUpperCase());
   }
 
-  public static String getFCMToken(Context context) {
+  public static String getFCMToken(@NotNull Context context) {
     return context
       .getSharedPreferences(PreferencesService.GLOBAL_PREFERENCES, MODE_PRIVATE)
       .getString(PreferencesService.FCM_TOKEN_KEY, null);

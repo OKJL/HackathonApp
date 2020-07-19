@@ -1,5 +1,6 @@
 package org.ourkidslearningjourney.swtrace;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -36,10 +37,17 @@ public class MainActivity
 
   private static SharedPreferences sSharedPreferences;
 
+  @NonNull
+  public static Intent createIntent(@NonNull Context context) {
+    return new Intent(context, MainActivity.class);
+  }
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
+
+    FirebaseAuth.getInstance().addAuthStateListener(this);
 
     sSharedPreferences = getApplicationContext().getSharedPreferences(
       PreferencesService.GLOBAL_PREFERENCES,
@@ -48,15 +56,15 @@ public class MainActivity
   }
 
   @Override
-  protected void onStart() {
-    super.onStart();
-    FirebaseAuth.getInstance().addAuthStateListener(this);
-  }
-
-  @Override
   public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
     if (FirebaseService.getCurrentUser() == null) {
       createSignInIntent();
+      return;
+    }
+
+    if (!sSharedPreferences.getBoolean(PreferencesService.SETUP_COMPLETED_KEY, false)) {
+      startActivity(SetupActivity.createIntent(this));
+      finishAffinity();
       return;
     }
 
