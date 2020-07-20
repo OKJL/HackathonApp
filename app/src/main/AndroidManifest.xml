@@ -5,6 +5,8 @@
   <uses-permission android:name="android.permission.BLUETOOTH" />
   <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
   <uses-permission android:name="android.permission.INTERNET" />
+  <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+  <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
   <application
     android:name=".AppTraCCite"
@@ -21,6 +23,7 @@
     <activity android:name=".NotifySpecificUserActivity" />
     <activity android:name=".NotifySuccessActivity" />
     <activity android:name=".NotifyTimeframeActivity" />
+    <activity android:name=".BeaconActivity"/>
 
     <activity
       android:name=".PermActivity" />
@@ -45,6 +48,10 @@
     </service>
     <service
       android:name="com.kontakt.sdk.android.ble.service.ProximityService"
+      android:exported="false" />
+    <service
+      android:name=".services.BtleBackgroundScanService"
+      android:enabled="true"
       android:exported="false" />
   </application>
 
