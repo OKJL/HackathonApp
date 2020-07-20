@@ -1,5 +1,6 @@
 package org.ourkidslearningjourney.swtrace;
 
+import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -35,6 +36,7 @@ public class MainActivity
   private static final String TOS_URL = "https://ite.edu.sg";
   private static final String PRIVACY_POLICY_URL = "https://ite.edu.sg";
 
+  private static BluetoothAdapter sBluetoothAdapter;
   private static SharedPreferences sSharedPreferences;
 
   @NonNull
@@ -48,6 +50,8 @@ public class MainActivity
     setContentView(R.layout.activity_main);
 
     FirebaseAuth.getInstance().addAuthStateListener(this);
+
+    sBluetoothAdapter = android.bluetooth.BluetoothAdapter.getDefaultAdapter();
 
     sSharedPreferences = getApplicationContext().getSharedPreferences(
       PreferencesService.GLOBAL_PREFERENCES,
@@ -65,6 +69,11 @@ public class MainActivity
     if (!sSharedPreferences.getBoolean(PreferencesService.SETUP_COMPLETED_KEY, false)) {
       startActivity(SetupActivity.createIntent(this));
       finishAffinity();
+      return;
+    }
+
+    if (!sBluetoothAdapter.isEnabled()) {
+//      TODO: startActivity()
       return;
     }
 
