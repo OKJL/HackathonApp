@@ -73,7 +73,8 @@ public class MainActivity
     }
 
     if (!sBluetoothAdapter.isEnabled()) {
-//      TODO: startActivity()
+      startActivity(SetupBluetoothActivity.createIntent(this));
+      finishAffinity();
       return;
     }
 
