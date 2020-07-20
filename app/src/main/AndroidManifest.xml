@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
   package="org.ourkidslearningjourney.swtrace">
 
+  <!--  Permissions -->
   <uses-permission android:name="android.permission.INTERNET" />
   <uses-permission android:name="android.permission.BLUETOOTH" />
   <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
@@ -16,7 +17,11 @@
     android:roundIcon="@mipmap/ic_launcher_round"
     android:supportsRtl="true"
     android:theme="@style/SWTrace">
-    <activity android:name=".SetupBluetoothActivity"></activity>
+
+    <!-- Activities -->
+    <activity
+      android:name=".SetupBluetoothActivity"
+      android:screenOrientation="portrait" />
     <activity
       android:name=".SetupActivity"
       android:screenOrientation="portrait" />
@@ -32,6 +37,16 @@
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </activity>
-  </application>
 
+    <!-- Services -->
+    <service
+      android:name=".services.FCMService"
+      android:exported="false"
+      android:stopWithTask="false">
+      <intent-filter>
+        <action android:name="com.google.firebase.MESSAGING_EVENT" />
+      </intent-filter>
+    </service>
+
+  </application>
 </manifest>

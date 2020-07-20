@@ -60,6 +60,13 @@ public class MainActivity
   }
 
   @Override
+  protected void onDestroy() {
+    super.onDestroy();
+
+    FirebaseAuth.getInstance().removeAuthStateListener(this);
+  }
+
+  @Override
   public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
     if (FirebaseService.getCurrentUser() == null) {
       createSignInIntent();

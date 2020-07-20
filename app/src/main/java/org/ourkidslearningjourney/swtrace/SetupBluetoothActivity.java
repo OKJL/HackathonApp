@@ -42,11 +42,11 @@ public class SetupBluetoothActivity extends AppCompatActivity implements View.On
     super.onActivityResult(requestCode, resultCode, data);
 
     if (requestCode == REQUEST_ENABLE_BT) {
-      if (requestCode == RESULT_OK) {
-        startActivity(MainActivity.createIntent(this));
+      if (resultCode == RESULT_OK) {
+        startActivity(HomeActivity.createIntent(this));
         finishAffinity();
       }
     }
-
   }
+
 }

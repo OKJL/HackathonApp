@@ -6,6 +6,7 @@ import org.ourkidslearningjourney.swtrace.services.FCMService;
 import org.ourkidslearningjourney.swtrace.services.FirebaseService;
 
 public class SWTrace extends Application {
+
   @Override
   public void onCreate() {
     super.onCreate();
