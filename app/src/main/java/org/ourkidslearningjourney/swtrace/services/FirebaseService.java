@@ -1,13 +1,13 @@
 package org.ourkidslearningjourney.swtrace.services;
 
-import android.app.Application;
-
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
@@ -30,16 +30,19 @@ public class FirebaseService {
     return sUser.getCurrentUser();
   }
 
+  @NotNull
   public static CollectionReference getUsersCollection() {
     return sDb.collection("users");
   }
 
+  @NotNull
   public static Task<Void> setUsersCollection(Map<String, Object> data) {
     return getUsersCollection()
       .document()
       .set(data, SetOptions.merge());
   }
 
+  @NotNull
   public static Task<Void> setUsersCollection(String doc, Map<String, Object> data) {
     return getUsersCollection()
       .document(doc)
