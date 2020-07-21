@@ -78,7 +78,7 @@
     android:layout_marginStart="32dp"
     android:layout_marginEnd="32dp"
     android:layout_marginBottom="32dp"
-    android:text="Enable Bluetooth"
+    android:text="Allow Permissions"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent" />
