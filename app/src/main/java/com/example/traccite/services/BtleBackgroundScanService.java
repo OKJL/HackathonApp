@@ -24,6 +24,8 @@ import com.kontakt.sdk.android.common.profile.IEddystoneDevice;
 import com.kontakt.sdk.android.common.profile.IEddystoneNamespace;
 import com.kontakt.sdk.android.common.profile.RemoteBluetoothDevice;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 public class BtleBackgroundScanService extends Service {
@@ -37,6 +39,7 @@ public class BtleBackgroundScanService extends Service {
 
   private final Handler handler = new Handler();
   private ProximityManager proximityManager;
+  private Date currenttime;
   private boolean isRunning; // Flag indicating if service is already running.
   private int devicesCount; // Total discovered devices count
 
@@ -45,6 +48,7 @@ public class BtleBackgroundScanService extends Service {
     super.onCreate();
     setupProximityManager();
     isRunning = false;
+    currenttime = Calendar.getInstance().getTime();
   }
 
   private void setupProximityManager() {
@@ -107,7 +111,7 @@ public class BtleBackgroundScanService extends Service {
       @Override
       public void onEddystoneDiscovered(IEddystoneDevice eddystone, IEddystoneNamespace namespace) {
         onDeviceDiscovered(eddystone);
-        Log.i(TAG, "onEddystoneDiscovered: " + eddystone.toString());
+        Log.i(TAG, "onEddystoneDiscovered: " + eddystone.getUniqueId() + currenttime);
       }
     };
   }
@@ -133,3 +137,4 @@ public class BtleBackgroundScanService extends Service {
     super.onDestroy();
   }
 }
+
