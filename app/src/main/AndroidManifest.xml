@@ -20,7 +20,7 @@
 
     <!-- Activities -->
     <activity
-      android:name=".SetupBluetoothActivity"
+      android:name=".SetupPermissions"
       android:screenOrientation="portrait" />
     <activity
       android:name=".SetupActivity"

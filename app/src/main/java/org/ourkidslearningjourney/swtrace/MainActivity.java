@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -17,11 +18,14 @@ import com.firebase.ui.auth.IdpResponse;
 import com.google.firebase.auth.FirebaseAuth;
 
 import org.ourkidslearningjourney.swtrace.services.FirebaseService;
+import org.ourkidslearningjourney.swtrace.services.PermissionService;
 import org.ourkidslearningjourney.swtrace.services.PreferencesService;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainActivity
   extends AppCompatActivity
@@ -49,14 +53,19 @@ public class MainActivity
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
-    FirebaseAuth.getInstance().addAuthStateListener(this);
-
     sBluetoothAdapter = android.bluetooth.BluetoothAdapter.getDefaultAdapter();
 
     sSharedPreferences = getApplicationContext().getSharedPreferences(
       PreferencesService.GLOBAL_PREFERENCES,
       MODE_PRIVATE
     );
+
+    new Timer().schedule(new TimerTask() {
+      @Override
+      public void run() {
+        FirebaseAuth.getInstance().addAuthStateListener(MainActivity.this);
+      }
+    }, 500);
   }
 
   @Override
@@ -80,7 +89,13 @@ public class MainActivity
     }
 
     if (!sBluetoothAdapter.isEnabled()) {
-      startActivity(SetupBluetoothActivity.createIntent(this));
+      startActivity(SetupPermissions.createIntent(this));
+      finishAffinity();
+      return;
+    }
+
+    if (!PermissionService.hasPermissions(this, PermissionService.PERMISSIONS)) {
+      startActivity(SetupPermissions.createIntent(this));
       finishAffinity();
       return;
     }
