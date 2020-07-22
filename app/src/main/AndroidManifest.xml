@@ -52,7 +52,7 @@
     </service>
 
     <service
-      android:name=".services.BeaconScanningService"
+      android:name=".services.BeaconService"
       android:enabled="true"
       android:exported="true"
       android:stopWithTask="false" />

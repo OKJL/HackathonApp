@@ -23,8 +23,6 @@
 package org.ourkidslearningjourney.swtrace.services;
 
 import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
@@ -40,11 +38,11 @@ import org.ourkidslearningjourney.swtrace.R;
 
 import static org.ourkidslearningjourney.swtrace.SWTrace.CHANNEL_ID;
 
-public class BeaconScanningService extends Service {
+public class BeaconService extends Service {
 
   @NonNull
   public static Intent createIntent(@NonNull Context context) {
-    return new Intent(context, BeaconScanningService.class);
+    return new Intent(context, BeaconService.class);
   }
 
   @Override

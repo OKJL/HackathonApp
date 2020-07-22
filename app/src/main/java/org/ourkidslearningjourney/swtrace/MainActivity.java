@@ -39,7 +39,7 @@ import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.firebase.auth.FirebaseAuth;
 
-import org.ourkidslearningjourney.swtrace.services.BeaconScanningService;
+import org.ourkidslearningjourney.swtrace.services.BeaconService;
 import org.ourkidslearningjourney.swtrace.services.FirebaseService;
 import org.ourkidslearningjourney.swtrace.services.PermissionService;
 import org.ourkidslearningjourney.swtrace.services.PreferencesService;
@@ -172,7 +172,7 @@ public class MainActivity
      */
     ContextCompat.startForegroundService(
       this,
-      BeaconScanningService.createIntent(this)
+      BeaconService.createIntent(this)
     );
 
     /*
