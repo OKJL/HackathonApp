@@ -12,11 +12,13 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.firebase.auth.FirebaseAuth;
 
+import org.ourkidslearningjourney.swtrace.services.BeaconScanningService;
 import org.ourkidslearningjourney.swtrace.services.FirebaseService;
 import org.ourkidslearningjourney.swtrace.services.PermissionService;
 import org.ourkidslearningjourney.swtrace.services.PreferencesService;
@@ -59,6 +61,9 @@ public class MainActivity
       PreferencesService.GLOBAL_PREFERENCES,
       MODE_PRIVATE
     );
+
+    Intent serviceIntent = new Intent(this, BeaconScanningService.class);
+    ContextCompat.startForegroundService(this, serviceIntent);
 
     new Timer().schedule(new TimerTask() {
       @Override
