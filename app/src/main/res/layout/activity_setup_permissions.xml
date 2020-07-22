@@ -6,19 +6,6 @@
   android:layout_height="match_parent"
   tools:context=".SetupPermissions">
 
-  <TextView
-    android:id="@+id/txt_title"
-    style="@style/SWTrace.TitleStyle"
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="32dp"
-    android:layout_marginTop="16dp"
-    android:layout_marginEnd="32dp"
-    android:text="To help us contact trace properly, your app needs these permissions"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/svg_graphic" />
-
   <ImageView
     android:id="@+id/svg_graphic"
     android:layout_width="0dp"
@@ -33,13 +20,26 @@
     app:layout_constraintTop_toTopOf="parent" />
 
   <TextView
+    android:id="@+id/txt_title"
+    style="@style/SWTrace.TitleStyle"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="32dp"
+    android:layout_marginTop="16dp"
+    android:layout_marginEnd="32dp"
+    android:text="@string/permissions_title"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/svg_graphic" />
+
+  <TextView
     android:id="@+id/txt_bluetooth"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:layout_marginStart="32dp"
     android:layout_marginTop="16dp"
     android:layout_marginEnd="32dp"
-    android:text="1. Bluetooth"
+    android:text="@string/permissions_bluetooth"
     android:textSize="20sp"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
@@ -52,7 +52,7 @@
     android:layout_marginStart="32dp"
     android:layout_marginTop="16dp"
     android:layout_marginEnd="32dp"
-    android:text="2. Notification"
+    android:text="@string/permissions_notification"
     android:textSize="20sp"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
@@ -65,7 +65,7 @@
     android:layout_marginStart="32dp"
     android:layout_marginTop="16dp"
     android:layout_marginEnd="32dp"
-    android:text="3. Location Services"
+    android:text="@string/permissions_location"
     android:textSize="20sp"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
@@ -78,7 +78,7 @@
     android:layout_marginStart="32dp"
     android:layout_marginEnd="32dp"
     android:layout_marginBottom="32dp"
-    android:text="Allow Permissions"
+    android:text="@string/allow_permissions"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent" />
