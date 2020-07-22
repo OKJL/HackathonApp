@@ -38,17 +38,9 @@ import androidx.core.app.NotificationCompat;
 import org.ourkidslearningjourney.swtrace.MainActivity;
 import org.ourkidslearningjourney.swtrace.R;
 
+import static org.ourkidslearningjourney.swtrace.SWTrace.CHANNEL_ID;
+
 public class BeaconScanningService extends Service {
-
-  /*
-   * PendingIntent: Request Code
-   */
-  private static final int RC_NOTIFICATION = 1028;
-
-  /*
-   * NotificationChannel: Channel ID
-   */
-  private static final String CHANNEL_ID = "BeaconScanningService";
 
   @NonNull
   public static Intent createIntent(@NonNull Context context) {
@@ -65,17 +57,12 @@ public class BeaconScanningService extends Service {
     super.onStartCommand(intent, flags, startId);
 
     /*
-     * Creates a new notification channel
-     */
-    createNotificationChannel();
-
-    /*
      * Creates a pending intent for redirecting notification
      * onClick events to an activity
      */
     PendingIntent pIntent = PendingIntent.getActivity(
       this,
-      RC_NOTIFICATION,
+      0,
       new Intent(this, MainActivity.class),
       0
     );
@@ -107,18 +94,5 @@ public class BeaconScanningService extends Service {
   @Override
   public IBinder onBind(Intent intent) {
     return null;
-  }
-
-  private void createNotificationChannel() {
-    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-      NotificationChannel channel = new NotificationChannel(
-        CHANNEL_ID,
-        "Auto Tracing System Active",
-        NotificationManager.IMPORTANCE_DEFAULT
-      );
-
-      NotificationManager manager = getSystemService(NotificationManager.class);
-      manager.createNotificationChannel(channel);
-    }
   }
 }
