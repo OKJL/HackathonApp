@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -62,8 +61,10 @@ public class MainActivity
       MODE_PRIVATE
     );
 
-    Intent serviceIntent = new Intent(this, BeaconScanningService.class);
-    ContextCompat.startForegroundService(this, serviceIntent);
+    ContextCompat.startForegroundService(
+      this,
+      BeaconScanningService.createIntent(this)
+    );
 
     new Timer().schedule(new TimerTask() {
       @Override

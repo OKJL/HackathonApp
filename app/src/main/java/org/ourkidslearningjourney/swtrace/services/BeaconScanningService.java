@@ -3,12 +3,15 @@ package org.ourkidslearningjourney.swtrace.services;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
+import org.ourkidslearningjourney.swtrace.HomeActivity;
 import org.ourkidslearningjourney.swtrace.MainActivity;
 import org.ourkidslearningjourney.swtrace.R;
 
@@ -16,6 +19,11 @@ public class BeaconScanningService extends Service {
 
   private static final int RC_NOTIFICATION = 1028;
   private static final String CHANNEL_ID = "BeaconScanningService";
+
+  @NonNull
+  public static Intent createIntent(@NonNull Context context) {
+    return new Intent(context, BeaconScanningService.class);
+  }
 
   @Override
   public void onCreate() {
