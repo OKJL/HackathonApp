@@ -109,14 +109,6 @@ public class MainActivity
     );
 
     /*
-     * Start beacon scanning service
-     */
-    ContextCompat.startForegroundService(
-      this,
-      BeaconScanningService.createIntent(this)
-    );
-
-    /*
      * Delay for 500ms and start listening for Firebase auth status
      */
     new Timer().schedule(new TimerTask() {
@@ -174,6 +166,14 @@ public class MainActivity
       finishAffinity();
       return;
     }
+
+    /*
+     * Start beacon scanning service
+     */
+    ContextCompat.startForegroundService(
+      this,
+      BeaconScanningService.createIntent(this)
+    );
 
     /*
      * Start HomeActivity if all checks passed

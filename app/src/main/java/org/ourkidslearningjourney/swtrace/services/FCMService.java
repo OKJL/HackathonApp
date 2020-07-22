@@ -1,3 +1,25 @@
+/*
+ * Copyright (c) 2020 SWTrace Team
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 package org.ourkidslearningjourney.swtrace.services;
 
 import android.content.Context;
@@ -16,10 +38,19 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class FCMService extends FirebaseMessagingService {
+
+  /*
+   * Logcat: Logging Tag
+   */
   private static final String TAG = "FCMService";
 
+  /*
+   * subscribeToTopic will automatically subscribe the current
+   * FCM Token to the topic with Firebase
+   */
   @NotNull
   public static Task<Void> subscribeToTopic(@NotNull String topic) {
     return FirebaseMessaging
@@ -27,12 +58,23 @@ public class FCMService extends FirebaseMessagingService {
       .subscribeToTopic(topic.toUpperCase());
   }
 
+  /*
+   * getFCMToken will retrieve the FCM token currently stored in
+   * SharedPreferences.
+   *
+   * If no value is set, it will return null
+   */
+  @Nullable
   public static String getFCMToken(@NotNull Context context) {
     return context
       .getSharedPreferences(PreferencesService.GLOBAL_PREFERENCES, MODE_PRIVATE)
       .getString(PreferencesService.FCM_TOKEN_KEY, null);
   }
 
+  /*
+   * fetchFCMToken will retrieve the FCM token from Firebase and
+   * store the value into SharedPreferences.
+   */
   public static void fetchFCMToken(final Context context) {
     FirebaseInstanceId
       .getInstance()
