@@ -1,6 +1,8 @@
 package org.ourkidslearningjourney.swtrace.services;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
@@ -11,7 +13,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
-import org.ourkidslearningjourney.swtrace.HomeActivity;
 import org.ourkidslearningjourney.swtrace.MainActivity;
 import org.ourkidslearningjourney.swtrace.R;
 
@@ -33,6 +34,8 @@ public class BeaconScanningService extends Service {
   @Override
   public int onStartCommand(Intent intent, int flags, int startId) {
     super.onStartCommand(intent, flags, startId);
+
+    createNotificationChannel();
 
     Intent nIntent = new Intent(this, MainActivity.class);
     PendingIntent pIntent = PendingIntent.getActivity(this, RC_NOTIFICATION, nIntent, 0);
@@ -58,5 +61,18 @@ public class BeaconScanningService extends Service {
   @Override
   public IBinder onBind(Intent intent) {
     return null;
+  }
+
+  private void createNotificationChannel() {
+    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+      NotificationChannel channel = new NotificationChannel(
+        CHANNEL_ID,
+        "Auto Tracing System Active",
+        NotificationManager.IMPORTANCE_DEFAULT
+      );
+
+      NotificationManager manager = getSystemService(NotificationManager.class);
+      manager.createNotificationChannel(channel);
+    }
   }
 }
