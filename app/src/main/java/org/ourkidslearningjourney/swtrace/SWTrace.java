@@ -27,6 +27,8 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.os.Build;
 
+import com.kontakt.sdk.android.common.KontaktSDK;
+
 import org.ourkidslearningjourney.swtrace.services.FCMService;
 import org.ourkidslearningjourney.swtrace.services.FirebaseService;
 
@@ -44,6 +46,7 @@ public class SWTrace extends Application {
     createNotificationChannel();
 
     FirebaseService.init();
+    KontaktSDK.initialize(this);
     FCMService.fetchFCMToken(this);
   }
 
@@ -51,7 +54,7 @@ public class SWTrace extends Application {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
       NotificationChannel channel = new NotificationChannel(
         CHANNEL_ID,
-        "Beacon Service Channel",
+        "Check-In & Out Notification",
         NotificationManager.IMPORTANCE_DEFAULT
       );
 
