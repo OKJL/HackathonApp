@@ -25,9 +25,11 @@ package org.ourkidslearningjourney.swtrace;
 import android.app.Application;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.BroadcastReceiver;
 import android.os.Build;
 
 import com.kontakt.sdk.android.common.KontaktSDK;
+import com.kontakt.sdk.android.common.log.LogLevel;
 
 import org.ourkidslearningjourney.swtrace.services.FCMService;
 import org.ourkidslearningjourney.swtrace.services.FirebaseService;
@@ -46,8 +48,9 @@ public class SWTrace extends Application {
     createNotificationChannel();
 
     FirebaseService.init();
-    KontaktSDK.initialize(this);
     FCMService.fetchFCMToken(this);
+
+    KontaktSDK.initialize(this);
   }
 
   private void createNotificationChannel() {
@@ -62,4 +65,5 @@ public class SWTrace extends Application {
       manager.createNotificationChannel(channel);
     }
   }
+
 }

@@ -58,13 +58,13 @@
     </service>
 
     <service
-      android:name=".services.BeaconService"
-      android:enabled="true"
-      android:exported="true"
-      android:stopWithTask="false" />
-
-    <service
       android:name="com.kontakt.sdk.android.ble.service.ProximityService"
       android:exported="false" />
+
+    <service
+      android:name=".services.BeaconService"
+      android:enabled="true"
+      android:exported="false"
+      android:stopWithTask="false" />
   </application>
 </manifest>
