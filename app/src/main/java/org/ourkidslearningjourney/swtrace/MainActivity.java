@@ -108,6 +108,8 @@ public class MainActivity
       MODE_PRIVATE
     );
 
+    Log.i(TAG, "Activated");
+
     /*
      * Delay for 500ms and start listening for Firebase auth status
      */

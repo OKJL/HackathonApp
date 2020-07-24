@@ -25,18 +25,18 @@ package org.ourkidslearningjourney.swtrace;
 import android.app.Application;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.content.BroadcastReceiver;
 import android.os.Build;
 
 import com.kontakt.sdk.android.common.KontaktSDK;
-import com.kontakt.sdk.android.common.log.LogLevel;
 
 import org.ourkidslearningjourney.swtrace.services.FCMService;
 import org.ourkidslearningjourney.swtrace.services.FirebaseService;
 
 public class SWTrace extends Application {
 
-  public static final String CHANNEL_ID = "BeaconChannel";
+  public static final String CHANNEL_ID = "Beacon Service";
+  public static final String CHANNEL_DESC =
+    "Actively monitors for nearby beacons for automated check-in and out process";
 
   @Override
   public void onCreate() {
@@ -57,7 +57,7 @@ public class SWTrace extends Application {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
       NotificationChannel channel = new NotificationChannel(
         CHANNEL_ID,
-        "Check-In & Out Notification",
+        CHANNEL_DESC,
         NotificationManager.IMPORTANCE_DEFAULT
       );
 
