@@ -31,7 +31,9 @@ import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
+import org.ourkidslearningjourney.swtrace.services.BeaconService;
 import org.ourkidslearningjourney.swtrace.services.FirebaseService;
 import org.ourkidslearningjourney.swtrace.services.PreferencesService;
 
@@ -88,6 +90,16 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
      * Sign the current user out of Firebase
      */
     FirebaseService.signOut();
+
+    /*
+     * Stops beacon monitoring service
+     */
+    stopService(BeaconService.createIntent(this));
+
+    /*
+     * Redirects the activity back to MainActivity
+     */
+    startActivity(MainActivity.createIntent(this));
 
     /*
      * Clears all activities

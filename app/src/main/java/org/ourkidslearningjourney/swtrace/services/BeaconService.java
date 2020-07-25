@@ -154,7 +154,7 @@ public class BeaconService extends Service implements EddystoneListener, OnServi
     Toast.makeText(
       this,
       "Eddystone Discovered: " + eddystone.toString(),
-      Toast.LENGTH_LONG
+      Toast.LENGTH_SHORT
     ).show();
 
     Log.i(TAG, "Eddystone Discovered: " + eddystone.toString());
@@ -170,7 +170,7 @@ public class BeaconService extends Service implements EddystoneListener, OnServi
     Toast.makeText(
       this,
       "Eddystone Lost: " + eddystone.toString(),
-      Toast.LENGTH_LONG
+      Toast.LENGTH_SHORT
     ).show();
 
     Log.i(TAG, "Eddystone Lost: " + eddystone.toString());
