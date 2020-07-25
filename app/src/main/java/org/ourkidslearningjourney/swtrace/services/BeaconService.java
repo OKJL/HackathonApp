@@ -122,14 +122,14 @@ public class BeaconService extends Service implements EddystoneListener, OnServi
 
   @Override
   public void onScanStart() {
-    Toast.makeText(this, "Scanning Started", Toast.LENGTH_LONG).show();
+    Toast.makeText(this, "Scanning Started", Toast.LENGTH_SHORT).show();
 
     Log.i(TAG, "Scanning Started");
   }
 
   @Override
   public void onScanStop() {
-    Toast.makeText(this, "Scanning Stopped", Toast.LENGTH_LONG).show();
+    Toast.makeText(this, "Scanning Stopped", Toast.LENGTH_SHORT).show();
 
     Log.i(TAG, "Scanning Stopped");
   }
@@ -153,7 +153,7 @@ public class BeaconService extends Service implements EddystoneListener, OnServi
   public void onEddystoneDiscovered(IEddystoneDevice eddystone, IEddystoneNamespace namespace) {
     Toast.makeText(
       this,
-      "Eddystone Discovered: " + eddystone.toString(),
+      "Eddystone Discovered: " + eddystone.getNamespace(),
       Toast.LENGTH_SHORT
     ).show();
 
@@ -169,7 +169,7 @@ public class BeaconService extends Service implements EddystoneListener, OnServi
   public void onEddystoneLost(IEddystoneDevice eddystone, IEddystoneNamespace namespace) {
     Toast.makeText(
       this,
-      "Eddystone Lost: " + eddystone.toString(),
+      "Eddystone Lost: " + eddystone.getNamespace(),
       Toast.LENGTH_SHORT
     ).show();
 
