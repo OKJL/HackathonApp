@@ -86,6 +86,14 @@ public class FirebaseService {
   }
 
   /*
+   * Returns a Firestore reference for entries collection
+   */
+  @NotNull
+  public static CollectionReference getEntriesCollection() {
+    return sDb.collection("entries");
+  }
+
+  /*
    * Returns a listener to check if the operation is successful or failed
    */
   @NotNull
@@ -101,6 +109,26 @@ public class FirebaseService {
   @NotNull
   public static Task<Void> setUsersCollection(String doc, Map<String, Object> data) {
     return getUsersCollection()
+      .document(doc)
+      .set(data, SetOptions.merge());
+  }
+
+  /*
+   * Returns a listener to check if the operation is successful or failed
+   */
+  @NotNull
+  public static Task<Void> setEntriesCollection(Map<String, Object> data) {
+    return getEntriesCollection()
+      .document()
+      .set(data, SetOptions.merge());
+  }
+
+  /*
+   * Returns a listener to check if the operation is successful or failed
+   */
+  @NotNull
+  public static Task<Void> setEntriesCollection(String doc, Map<String, Object> data) {
+    return getEntriesCollection()
       .document(doc)
       .set(data, SetOptions.merge());
   }
