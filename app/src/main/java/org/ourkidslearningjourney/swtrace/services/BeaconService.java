@@ -151,11 +151,18 @@ public class BeaconService extends Service implements EddystoneListener, OnServi
 
   @Override
   public void onEddystoneDiscovered(IEddystoneDevice eddystone, IEddystoneNamespace namespace) {
-    Toast.makeText(
-      this,
-      "Eddystone Discovered: " + eddystone.getNamespace(),
-      Toast.LENGTH_SHORT
-    ).show();
+
+    if (eddystone.getNamespace().equals("f065567720a00000001a")) {
+      if (eddystone.getInstanceId().equals("65567720a001")) {
+        Toast.makeText(this, "Now entering Aaron's quarters", Toast.LENGTH_SHORT).show();
+      }
+    }
+
+    if (eddystone.getNamespace().equals("f065567720a00000001a")) {
+      if (eddystone.getInstanceId().equals("65567720a002")) {
+        Toast.makeText(this, "Now leaving Aaron's quarters", Toast.LENGTH_SHORT).show();
+      }
+    }
 
     Log.i(TAG, "Eddystone Discovered: " + eddystone.toString());
   }
@@ -167,12 +174,6 @@ public class BeaconService extends Service implements EddystoneListener, OnServi
 
   @Override
   public void onEddystoneLost(IEddystoneDevice eddystone, IEddystoneNamespace namespace) {
-    Toast.makeText(
-      this,
-      "Eddystone Lost: " + eddystone.getNamespace(),
-      Toast.LENGTH_SHORT
-    ).show();
-
     Log.i(TAG, "Eddystone Lost: " + eddystone.toString());
   }
 }

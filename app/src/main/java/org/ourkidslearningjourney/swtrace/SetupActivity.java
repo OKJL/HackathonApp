@@ -208,7 +208,6 @@ public class SetupActivity extends AppCompatActivity implements View.OnClickList
     user.put(User.COUNTRY_NAME, mTxtCountryName.getText().toString().trim().toUpperCase());
     user.put(User.CONTACT_NUMBER, mTxtContactNumber.getEditText().getText().toString().trim());
     user.put(User.FCM_TOKENS, FieldValue.arrayUnion(FCMService.getFCMToken(this)));
-    user.put(User.UPDATED_AT, FieldValue.serverTimestamp());
 
     /*
      * Subscribe the current device into ALL_USERS topic

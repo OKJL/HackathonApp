@@ -14,7 +14,6 @@ public class User extends HashMap<String, Object> {
   public static final String COUNTRY_NAME = "Country Name";
   public static final String CONTACT_NUMBER = "Contact Number";
   public static final String FCM_TOKENS = "FCM Tokens";
-  public static final String UPDATED_AT = "updatedAt";
   public static final String CREATED_AT = "createdAt";
 
   @Nullable
@@ -34,7 +33,6 @@ public class User extends HashMap<String, Object> {
     COUNTRY_NAME,
     CONTACT_NUMBER,
     FCM_TOKENS,
-    UPDATED_AT,
     CREATED_AT
   })
   public @interface UserKeyDef {
