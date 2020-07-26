@@ -58,7 +58,7 @@ public class SWTrace extends Application {
       NotificationChannel channel = new NotificationChannel(
         CHANNEL_ID,
         CHANNEL_DESC,
-        NotificationManager.IMPORTANCE_DEFAULT
+        NotificationManager.IMPORTANCE_HIGH
       );
 
       NotificationManager manager = getSystemService(NotificationManager.class);

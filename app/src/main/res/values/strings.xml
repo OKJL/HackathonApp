@@ -22,4 +22,8 @@
   <string name="permissions_bluetooth">Bluetooth</string>
   <string name="permissions_location">Location Services</string>
   <string name="allow_permissions">Allow Permissions</string>
+
+  <string name="no_bluetooth_title">Oh no!</string>
+  <string name="no_bluetooth_description">It looks like your phone does not support Bluetooth technology!</string>
+  <string name="close_application">Close Application</string>
 </resources>

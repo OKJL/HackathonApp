@@ -149,6 +149,12 @@ public class MainActivity
       return;
     }
 
+    if (sBluetoothAdapter == null) {
+      startActivity(NoBluetoothActivity.createIntent(this));
+      finishAffinity();
+      return;
+    }
+
     /*
      * Check if Bluetooth is currently turned on
      */
