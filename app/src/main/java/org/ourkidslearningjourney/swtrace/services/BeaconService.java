@@ -35,6 +35,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
+import com.google.gson.Gson;
 import com.kontakt.sdk.android.ble.configuration.ScanMode;
 import com.kontakt.sdk.android.ble.configuration.ScanPeriod;
 import com.kontakt.sdk.android.ble.connection.OnServiceReadyListener;
@@ -57,7 +58,8 @@ public class BeaconService extends Service implements EddystoneListener, OnServi
 
   private static final String TAG = "BeaconService";
 
-  private ProximityManager mProximityManager;
+  private static Gson sGson;
+  private static ProximityManager sProximityManager;
 
   @NonNull
   public static Intent createIntent(@NonNull Context context) {
@@ -68,10 +70,12 @@ public class BeaconService extends Service implements EddystoneListener, OnServi
   public void onCreate() {
     super.onCreate();
 
-    mProximityManager = ProximityManagerFactory.create(this);
-    mProximityManager.setEddystoneListener(this);
-    mProximityManager.setScanStatusListener(this);
-    mProximityManager.configuration()
+    sGson = new Gson();
+
+    sProximityManager = ProximityManagerFactory.create(this);
+    sProximityManager.setEddystoneListener(this);
+    sProximityManager.setScanStatusListener(this);
+    sProximityManager.configuration()
       .scanMode(ScanMode.BALANCED)
       .scanPeriod(ScanPeriod.RANGING)
       .eddystoneFrameTypes(Collections.singletonList(EddystoneFrameType.UID));
@@ -81,7 +85,7 @@ public class BeaconService extends Service implements EddystoneListener, OnServi
   public int onStartCommand(Intent intent, int flags, int startId) {
     super.onStartCommand(intent, flags, startId);
 
-    mProximityManager.connect(this);
+    sProximityManager.connect(this);
 
     PendingIntent pIntent = PendingIntent.getActivity(
       this,
@@ -105,8 +109,8 @@ public class BeaconService extends Service implements EddystoneListener, OnServi
   public void onDestroy() {
     super.onDestroy();
 
-    mProximityManager.disconnect();
-    mProximityManager = null;
+    sProximityManager.disconnect();
+    sProximityManager = null;
   }
 
   @Nullable
@@ -117,7 +121,7 @@ public class BeaconService extends Service implements EddystoneListener, OnServi
 
   @Override
   public void onServiceReady() {
-    mProximityManager.startScanning();
+    sProximityManager.startScanning();
   }
 
   @Override
