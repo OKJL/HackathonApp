@@ -31,7 +31,6 @@ import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
 import org.ourkidslearningjourney.swtrace.services.BeaconService;
 import org.ourkidslearningjourney.swtrace.services.FirebaseService;
@@ -63,7 +62,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
      * Set the preference manager
      */
     sPreferences = getApplication().getSharedPreferences(
-      PreferencesService.GLOBAL_PREFERENCES,
+      PreferencesService.PREF_GLOBAL,
       MODE_PRIVATE
     );
 
@@ -84,7 +83,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     /*
      * Reset the setup completed status
      */
-    sPreferences.edit().putBoolean(PreferencesService.SETUP_COMPLETED_KEY, false).apply();
+    sPreferences.edit().putBoolean(PreferencesService.PREF_SETUP_COMPLETED, false).apply();
 
     /*
      * Sign the current user out of Firebase

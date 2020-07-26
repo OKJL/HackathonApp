@@ -67,8 +67,8 @@ public class FCMService extends FirebaseMessagingService {
   @Nullable
   public static String getFCMToken(@NotNull Context context) {
     return context
-      .getSharedPreferences(PreferencesService.GLOBAL_PREFERENCES, MODE_PRIVATE)
-      .getString(PreferencesService.FCM_TOKEN_KEY, null);
+      .getSharedPreferences(PreferencesService.PREF_GLOBAL, MODE_PRIVATE)
+      .getString(PreferencesService.PREF_FCM_TOKEN, null);
   }
 
   /*
@@ -85,9 +85,9 @@ public class FCMService extends FirebaseMessagingService {
           Log.i(TAG, "Retrieved FCM Token: " + task.getResult().getToken());
 
           context
-            .getSharedPreferences(PreferencesService.GLOBAL_PREFERENCES, MODE_PRIVATE)
+            .getSharedPreferences(PreferencesService.PREF_GLOBAL, MODE_PRIVATE)
             .edit()
-            .putString(PreferencesService.FCM_TOKEN_KEY, task.getResult().getToken())
+            .putString(PreferencesService.PREF_FCM_TOKEN, task.getResult().getToken())
             .apply();
         }
       })
@@ -109,11 +109,11 @@ public class FCMService extends FirebaseMessagingService {
 
     getApplicationContext()
       .getSharedPreferences(
-        PreferencesService.GLOBAL_PREFERENCES,
+        PreferencesService.PREF_GLOBAL,
         MODE_PRIVATE
       )
       .edit()
-      .putString(PreferencesService.FCM_TOKEN_KEY, token)
+      .putString(PreferencesService.PREF_FCM_TOKEN, token)
       .apply();
   }
 

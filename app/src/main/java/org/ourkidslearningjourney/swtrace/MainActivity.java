@@ -104,7 +104,7 @@ public class MainActivity
      * Set the preference manager
      */
     sSharedPreferences = getApplicationContext().getSharedPreferences(
-      PreferencesService.GLOBAL_PREFERENCES,
+      PreferencesService.PREF_GLOBAL,
       MODE_PRIVATE
     );
 
@@ -143,7 +143,7 @@ public class MainActivity
     /*
      * Check if the user has completed their setup process
      */
-    if (!sSharedPreferences.getBoolean(PreferencesService.SETUP_COMPLETED_KEY, false)) {
+    if (!sSharedPreferences.getBoolean(PreferencesService.PREF_SETUP_COMPLETED, false)) {
       startActivity(SetupActivity.createIntent(this));
       finishAffinity();
       return;

@@ -86,7 +86,7 @@ public class SetupActivity extends AppCompatActivity implements View.OnClickList
      */
     ArrayAdapter<String> countryAdapter = new ArrayAdapter<>(
       this,
-      R.layout.dropdown_item,
+      R.layout.partial_dropdown_item,
       getResources().getStringArray(R.array.countries)
     );
 
@@ -94,7 +94,7 @@ public class SetupActivity extends AppCompatActivity implements View.OnClickList
      * Set the preference manager
      */
     sPreferences = getApplicationContext().getSharedPreferences(
-      PreferencesService.GLOBAL_PREFERENCES,
+      PreferencesService.PREF_GLOBAL,
       MODE_PRIVATE
     );
 
@@ -247,7 +247,7 @@ public class SetupActivity extends AppCompatActivity implements View.OnClickList
       .addOnSuccessListener(new OnSuccessListener<Void>() {
         @Override
         public void onSuccess(Void aVoid) {
-          sPreferences.edit().putBoolean(PreferencesService.SETUP_COMPLETED_KEY, true).apply();
+          sPreferences.edit().putBoolean(PreferencesService.PREF_SETUP_COMPLETED, true).apply();
 
           startActivity(MainActivity.createIntent(getApplicationContext()));
           finishAffinity();

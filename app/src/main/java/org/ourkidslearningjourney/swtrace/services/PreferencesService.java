@@ -26,11 +26,11 @@ public class PreferencesService {
   /*
    * SharedPreferences: Preference Key Name
    */
-  public static final String GLOBAL_PREFERENCES = "_";
+  public static final String PREF_GLOBAL = "_";
 
   /*
    * SharedPreferences: Key-Value Pair Name
    */
-  public static final String FCM_TOKEN_KEY = "FCM_TOKEN";
-  public static final String SETUP_COMPLETED_KEY = "SETUP_COMPLETED";
+  public static final String PREF_FCM_TOKEN = "FCM_TOKEN";
+  public static final String PREF_SETUP_COMPLETED = "SETUP_COMPLETED";
 }
