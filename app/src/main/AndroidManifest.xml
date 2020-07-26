@@ -62,7 +62,8 @@
 
     <service
       android:name="com.kontakt.sdk.android.ble.service.ProximityService"
-      android:exported="false" />
+      android:exported="false"
+      android:stopWithTask="false"/>
 
     <service
       android:name=".services.BeaconService"

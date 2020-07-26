@@ -48,6 +48,7 @@ import com.kontakt.sdk.android.ble.spec.EddystoneFrameType;
 import com.kontakt.sdk.android.common.profile.IEddystoneDevice;
 import com.kontakt.sdk.android.common.profile.IEddystoneNamespace;
 
+import org.jetbrains.annotations.NotNull;
 import org.ourkidslearningjourney.swtrace.R;
 import org.ourkidslearningjourney.swtrace.SWTrace;
 
@@ -57,6 +58,7 @@ import java.util.List;
 public class BeaconService extends Service implements EddystoneListener, OnServiceReadyListener, ScanStatusListener {
 
   private static final String TAG = "BeaconService";
+  private static final String WAKELOCK_TAG = "SWTrace:BeaconService";
 
   private static Gson sGson;
   private static ProximityManager sProximityManager;
@@ -85,8 +87,6 @@ public class BeaconService extends Service implements EddystoneListener, OnServi
   public int onStartCommand(Intent intent, int flags, int startId) {
     super.onStartCommand(intent, flags, startId);
 
-    sProximityManager.connect(this);
-
     PendingIntent pIntent = PendingIntent.getActivity(
       this,
       0,
@@ -101,6 +101,8 @@ public class BeaconService extends Service implements EddystoneListener, OnServi
       .build();
 
     startForeground(1, notification);
+
+    sProximityManager.connect(this);
 
     return START_STICKY;
   }
@@ -154,7 +156,7 @@ public class BeaconService extends Service implements EddystoneListener, OnServi
   }
 
   @Override
-  public void onEddystoneDiscovered(IEddystoneDevice eddystone, IEddystoneNamespace namespace) {
+  public void onEddystoneDiscovered(@NotNull IEddystoneDevice eddystone, IEddystoneNamespace namespace) {
 
     if (eddystone.getNamespace().equals("f065567720a00000001a")) {
       if (eddystone.getInstanceId().equals("65567720a001")) {
@@ -177,7 +179,7 @@ public class BeaconService extends Service implements EddystoneListener, OnServi
   }
 
   @Override
-  public void onEddystoneLost(IEddystoneDevice eddystone, IEddystoneNamespace namespace) {
+  public void onEddystoneLost(@NotNull IEddystoneDevice eddystone, IEddystoneNamespace namespace) {
     Log.i(TAG, "Eddystone Lost: " + eddystone.toString());
   }
 }
