@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
   package="org.ourkidslearningjourney.swtrace">
+
   <!-- Permissions -->
   <uses-permission android:name="android.permission.INTERNET" />
   <uses-permission android:name="android.permission.BLUETOOTH" />
   <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
   <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
   <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-  <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- Services -->
+  <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+  <!-- Services -->
   <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
   <application
@@ -18,11 +21,16 @@
     android:roundIcon="@mipmap/ic_launcher_round"
     android:supportsRtl="true"
     android:theme="@style/SWTrace">
-    <activity android:name=".NoBluetoothActivity"></activity>
+
     <!-- Meta Data -->
     <meta-data
       android:name="kontakt.io.API_KEY"
-      android:value="zGwvulRMVFNSGUGzqiZwellCmsrpKKIl" /> <!-- Activities -->
+      android:value="zGwvulRMVFNSGUGzqiZwellCmsrpKKIl" />
+
+    <!-- Activities -->
+    <activity
+      android:name=".HomeActivity"
+      android:screenOrientation="portrait" />
     <activity
       android:name=".SetupPermissions"
       android:screenOrientation="portrait" />
@@ -30,7 +38,7 @@
       android:name=".SetupActivity"
       android:screenOrientation="portrait" />
     <activity
-      android:name=".HomeActivity"
+      android:name=".NoBluetoothActivity"
       android:screenOrientation="portrait" />
     <activity
       android:name=".MainActivity"
@@ -40,7 +48,9 @@
 
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
-    </activity> <!-- Services -->
+    </activity>
+
+    <!-- Services -->
     <service
       android:name=".services.FCMService"
       android:exported="false"
@@ -49,9 +59,11 @@
         <action android:name="com.google.firebase.MESSAGING_EVENT" />
       </intent-filter>
     </service>
+
     <service
       android:name="com.kontakt.sdk.android.ble.service.ProximityService"
       android:exported="false" />
+
     <service
       android:name=".services.BeaconService"
       android:enabled="true"
