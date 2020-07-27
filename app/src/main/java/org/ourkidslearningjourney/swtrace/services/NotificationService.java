@@ -57,7 +57,7 @@ public class NotificationService {
             context,
             SWTrace.CHANNEL_ID,
             "Beacon Lost",
-            "UID: " + device.getUniqueId() + " Namespace: " + namespace.getNamespace()
+            "Namespace: " + namespace.getNamespace() + " Instance: " + device.getInstanceId()
           );
           break;
         case 1:
@@ -65,7 +65,7 @@ public class NotificationService {
             context,
             SWTrace.CHANNEL_ID,
             "Beacon Discovered",
-            "UID: " + device.getUniqueId() + " Namespace: " + namespace.getNamespace()
+            "Namespace: " + namespace.getNamespace() + " Instance: " + device.getInstanceId()
           );
           break;
         default:
