@@ -3,8 +3,6 @@ package org.ourkidslearningjourney.swtrace.models;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringDef;
 
-import com.google.gson.annotations.SerializedName;
-
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.HashMap;

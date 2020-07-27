@@ -58,7 +58,6 @@ import java.util.List;
 public class BeaconService extends Service implements EddystoneListener, OnServiceReadyListener, ScanStatusListener {
 
   private static final String TAG = "BeaconService";
-  private static final String WAKELOCK_TAG = "SWTrace:BeaconService";
 
   private static Gson sGson;
   private static ProximityManager sProximityManager;
@@ -181,5 +180,7 @@ public class BeaconService extends Service implements EddystoneListener, OnServi
   @Override
   public void onEddystoneLost(@NotNull IEddystoneDevice eddystone, IEddystoneNamespace namespace) {
     Log.i(TAG, "Eddystone Lost: " + eddystone.toString());
+
+    sProximityManager.restartScanning();
   }
 }
