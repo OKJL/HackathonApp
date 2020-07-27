@@ -27,6 +27,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
@@ -35,6 +36,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.ServerTimestamp;
 import com.google.gson.Gson;
 import com.kontakt.sdk.android.ble.configuration.ScanMode;
 import com.kontakt.sdk.android.ble.configuration.ScanPeriod;
@@ -51,8 +61,11 @@ import com.kontakt.sdk.android.common.profile.IEddystoneNamespace;
 import org.jetbrains.annotations.NotNull;
 import org.ourkidslearningjourney.swtrace.R;
 import org.ourkidslearningjourney.swtrace.SWTrace;
+import org.ourkidslearningjourney.swtrace.models.Entry;
 
+import java.time.Duration;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 public class BeaconService extends Service implements EddystoneListener, OnServiceReadyListener, ScanStatusListener {
@@ -62,6 +75,7 @@ public class BeaconService extends Service implements EddystoneListener, OnServi
   private static Gson sGson;
   private static boolean isRunning;
   private static ProximityManager sProximityManager;
+  private static SharedPreferences sSharedPreferences;
 
   public static boolean isRunning() {
     return isRunning;
@@ -77,6 +91,8 @@ public class BeaconService extends Service implements EddystoneListener, OnServi
     super.onCreate();
 
     sGson = new Gson();
+
+    sSharedPreferences = getSharedPreferences(PreferencesService.PREF_GLOBAL, MODE_PRIVATE);
 
     sProximityManager = ProximityManagerFactory.create(this);
     sProximityManager.setEddystoneListener(this);
@@ -164,23 +180,28 @@ public class BeaconService extends Service implements EddystoneListener, OnServi
   }
 
   @Override
-  public void onEddystoneDiscovered(@NotNull IEddystoneDevice eddystone, IEddystoneNamespace namespace) {
-
-    if (eddystone.getNamespace().equals("f065567720a00000001a")) {
-      if (eddystone.getInstanceId().equals("65567720a001")) {
-        Toast.makeText(this, "Now entering Aaron's quarters", Toast.LENGTH_SHORT).show();
-      }
-    }
-
-    if (eddystone.getNamespace().equals("f065567720a00000001a")) {
-      if (eddystone.getInstanceId().equals("65567720a002")) {
-        Toast.makeText(this, "Now leaving Aaron's quarters", Toast.LENGTH_SHORT).show();
-      }
-    }
-
-    onDeviceDiscovered(eddystone, namespace, 1);
-
+  public void onEddystoneDiscovered(@NotNull final IEddystoneDevice eddystone, final IEddystoneNamespace namespace) {
     Log.i(TAG, "Eddystone Discovered: " + eddystone.toString());
+
+    Entry entry = new Entry();
+    entry.put(Entry.FCM_TOKEN, FCMService.getFCMToken(this));
+    entry.put(Entry.BEACON_ID, eddystone.getInstanceId());
+    entry.put(Entry.ENTERED_TIMESTAMP, FirebaseService.getServerTimestamp());
+    entry.put(Entry.EXITED_TIMESTAMP, FirebaseService.getServerTimestamp(FirebaseService.ONE_HOUR));
+
+    FirebaseService.setEntriesCollection(entry)
+      .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+        @Override
+        public void onSuccess(DocumentReference ref) {
+          onDeviceDiscovered(eddystone, namespace, 1);
+        }
+      })
+      .addOnFailureListener(new OnFailureListener() {
+        @Override
+        public void onFailure(@NonNull Exception e) {
+          onDeviceDiscovered(eddystone, namespace, -1);
+        }
+      });
   }
 
   @Override

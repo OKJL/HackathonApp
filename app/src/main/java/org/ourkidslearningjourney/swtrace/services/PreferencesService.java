@@ -31,6 +31,7 @@ public class PreferencesService {
   /*
    * SharedPreferences: Key-Value Pair Name
    */
+  public static final String PREF_TEMP = "TEMP";
   public static final String PREF_FCM_TOKEN = "FCM_TOKEN";
   public static final String PREF_SETUP_COMPLETED = "SETUP_COMPLETED";
 }

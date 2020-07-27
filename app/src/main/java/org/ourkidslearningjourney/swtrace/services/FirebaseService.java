@@ -22,23 +22,35 @@
 
 package org.ourkidslearningjourney.swtrace.services;
 
+import android.util.Log;
+
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.ServerTimestamp;
 import com.google.firebase.firestore.SetOptions;
 
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Date;
 import java.util.Map;
 
 public class FirebaseService {
+
+  public static final long ONE_HOUR = 3600000;
 
   /*
    * Logcat: Logging Tag
    */
   private static final String TAG = "FirebaseService";
+
+  @ServerTimestamp
+  private static Date serverTimestamp;
 
   /*
    * Firebase: Authentication Instance
@@ -68,6 +80,18 @@ public class FirebaseService {
    */
   public static void signOut() {
     sUser.signOut();
+  }
+
+  @NotNull
+  @ServerTimestamp
+  public static Date getServerTimestamp() {
+    return new Date();
+  }
+
+  @NotNull
+  @ServerTimestamp
+  public static Date getServerTimestamp(long after) {
+    return new Date(new Date().getTime() + after);
   }
 
   /*
@@ -117,10 +141,9 @@ public class FirebaseService {
    * Returns a listener to check if the operation is successful or failed
    */
   @NotNull
-  public static Task<Void> setEntriesCollection(Map<String, Object> data) {
+  public static Task<DocumentReference> setEntriesCollection(Map<String, Object> data) {
     return getEntriesCollection()
-      .document()
-      .set(data, SetOptions.merge());
+      .add(data);
   }
 
   /*
