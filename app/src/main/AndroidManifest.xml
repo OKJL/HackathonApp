@@ -67,12 +67,7 @@
     <service
       android:name=".services.BeaconService"
       android:enabled="true"
-      android:exported="false"
-      android:stopWithTask="false">
-      <intent-filter>
-        <action android:name="android.intent.action.BOND_STATE_CHANGED" />
-      </intent-filter>
-    </service>
+      android:exported="false" />
   </application>
 
 </manifest>

@@ -23,6 +23,7 @@
 package org.ourkidslearningjourney.swtrace.services;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
@@ -169,6 +170,8 @@ public class BeaconService extends Service implements EddystoneListener, OnServi
       }
     }
 
+    onDeviceDiscovered(eddystone, namespace, 1);
+
     Log.i(TAG, "Eddystone Discovered: " + eddystone.toString());
   }
 
@@ -181,6 +184,18 @@ public class BeaconService extends Service implements EddystoneListener, OnServi
   public void onEddystoneLost(@NotNull IEddystoneDevice eddystone, IEddystoneNamespace namespace) {
     Log.i(TAG, "Eddystone Lost: " + eddystone.toString());
 
+    onDeviceDiscovered(eddystone, namespace, 0);
+
     sProximityManager.restartScanning();
+  }
+
+  private void onDeviceDiscovered(IEddystoneDevice device, IEddystoneNamespace namespace, int status) {
+    Intent intent = new Intent()
+      .setAction(NotificationService.ACTION_DEVICE_DISCOVERED)
+      .putExtra(NotificationService.EXTRA_EDDYSTONE_DEVICE, device)
+      .putExtra(NotificationService.EXTRA_NAMESPACE_EDDYSTONE, namespace)
+      .putExtra(NotificationService.EXTRA_DEVICE_STATUS, status);
+
+    sendBroadcast(intent);
   }
 }

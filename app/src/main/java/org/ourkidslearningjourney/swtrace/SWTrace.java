@@ -25,18 +25,19 @@ package org.ourkidslearningjourney.swtrace;
 import android.app.Application;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.IntentFilter;
 import android.os.Build;
 
 import com.kontakt.sdk.android.common.KontaktSDK;
 
 import org.ourkidslearningjourney.swtrace.services.FCMService;
 import org.ourkidslearningjourney.swtrace.services.FirebaseService;
+import org.ourkidslearningjourney.swtrace.services.NotificationService;
 
 public class SWTrace extends Application {
 
-  public static final String CHANNEL_ID = "Beacon Service";
-  public static final String CHANNEL_DESC =
-    "Actively monitors for nearby beacons for automated check-in and out process";
+  public static final String CHANNEL_ID = "BeaconService";
+  public static final String CHANNEL_NAME = "Gantry Monitoring System";
 
   @Override
   public void onCreate() {
@@ -51,13 +52,16 @@ public class SWTrace extends Application {
     FCMService.fetchFCMToken(this);
 
     KontaktSDK.initialize(this);
+
+    IntentFilter filter = new IntentFilter(NotificationService.ACTION_DEVICE_DISCOVERED);
+    registerReceiver(NotificationService.BROADCAST_RECEIVER, filter);
   }
 
   private void createNotificationChannel() {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
       NotificationChannel channel = new NotificationChannel(
         CHANNEL_ID,
-        CHANNEL_DESC,
+        CHANNEL_NAME,
         NotificationManager.IMPORTANCE_HIGH
       );
 
@@ -65,5 +69,4 @@ public class SWTrace extends Application {
       manager.createNotificationChannel(channel);
     }
   }
-
 }
