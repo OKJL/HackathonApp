@@ -31,6 +31,7 @@ import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import org.ourkidslearningjourney.swtrace.services.BeaconService;
 import org.ourkidslearningjourney.swtrace.services.FirebaseService;
@@ -75,6 +76,15 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
      * Set onClick listener override
      */
     mBtnLogout.setOnClickListener(this);
+
+    /*
+     * Check if service is already running
+     *
+     * @bug service will not start upon first installation
+     */
+    if (!BeaconService.isRunning()) {
+      ContextCompat.startForegroundService(this, BeaconService.createIntent(this));
+    }
   }
 
   @Override

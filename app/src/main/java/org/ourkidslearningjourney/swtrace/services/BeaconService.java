@@ -23,7 +23,6 @@
 package org.ourkidslearningjourney.swtrace.services;
 
 import android.app.Notification;
-import android.app.NotificationChannel;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
@@ -61,7 +60,12 @@ public class BeaconService extends Service implements EddystoneListener, OnServi
   private static final String TAG = "BeaconService";
 
   private static Gson sGson;
+  private static boolean isRunning;
   private static ProximityManager sProximityManager;
+
+  public static boolean isRunning() {
+    return isRunning;
+  }
 
   @NonNull
   public static Intent createIntent(@NonNull Context context) {
@@ -81,6 +85,14 @@ public class BeaconService extends Service implements EddystoneListener, OnServi
       .scanMode(ScanMode.BALANCED)
       .scanPeriod(ScanPeriod.RANGING)
       .eddystoneFrameTypes(Collections.singletonList(EddystoneFrameType.UID));
+  }
+
+  @Override
+  public void onDestroy() {
+    super.onDestroy();
+
+    sProximityManager.disconnect();
+    sProximityManager = null;
   }
 
   @Override
@@ -107,14 +119,6 @@ public class BeaconService extends Service implements EddystoneListener, OnServi
     return START_STICKY;
   }
 
-  @Override
-  public void onDestroy() {
-    super.onDestroy();
-
-    sProximityManager.disconnect();
-    sProximityManager = null;
-  }
-
   @Nullable
   @Override
   public IBinder onBind(Intent intent) {
@@ -128,6 +132,8 @@ public class BeaconService extends Service implements EddystoneListener, OnServi
 
   @Override
   public void onScanStart() {
+    isRunning = true;
+
     Toast.makeText(this, "Scanning Started", Toast.LENGTH_SHORT).show();
 
     Log.i(TAG, "Scanning Started");
@@ -135,6 +141,8 @@ public class BeaconService extends Service implements EddystoneListener, OnServi
 
   @Override
   public void onScanStop() {
+    isRunning = false;
+
     Toast.makeText(this, "Scanning Stopped", Toast.LENGTH_SHORT).show();
 
     Log.i(TAG, "Scanning Stopped");
