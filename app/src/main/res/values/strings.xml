@@ -8,6 +8,7 @@
   <string name="home_title">Well Done!</string>
   <string name="from_ite">From ITE College Central</string>
   <string name="home_description">All the setup work is complete! Now you can exit this app and walk around. Your entries will automatically be captured.</string>
+  <string name="reset_gantries">Reset Gantries</string>
   <string name="logout">Log Out</string>
 
   <string name="setup_title">Before we continue...</string>

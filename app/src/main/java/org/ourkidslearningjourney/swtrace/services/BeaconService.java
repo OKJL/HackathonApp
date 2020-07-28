@@ -39,7 +39,6 @@ import androidx.core.app.NotificationCompat;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.gson.Gson;
 import com.kontakt.sdk.android.ble.configuration.ScanMode;
 import com.kontakt.sdk.android.ble.configuration.ScanPeriod;
 import com.kontakt.sdk.android.ble.connection.OnServiceReadyListener;
@@ -65,7 +64,6 @@ public class BeaconService extends Service implements EddystoneListener, OnServi
 
   private static final String TAG = "BeaconService";
 
-  private static Gson sGson;
   private static boolean isRunning;
   private static ProximityManager sProximityManager;
   private static SharedPreferences sSharedPreferences;
@@ -82,8 +80,6 @@ public class BeaconService extends Service implements EddystoneListener, OnServi
   @Override
   public void onCreate() {
     super.onCreate();
-
-    sGson = new Gson();
 
     sSharedPreferences = getSharedPreferences(PreferenceConstants.PREF_GLOBAL, MODE_PRIVATE);
 

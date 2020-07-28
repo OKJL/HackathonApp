@@ -26,8 +26,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -40,14 +42,18 @@ import org.ourkidslearningjourney.swtrace.PreferenceConstants;
 
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
 
+  private static final String TAG = HomeActivity.class.getSimpleName();
+
   /*
    * SharedPreferences: Preference Manager
    */
-  private static SharedPreferences sPreferences;
+  private static SharedPreferences sGlobalPrefs;
+  private static SharedPreferences sGantryPrefs;
 
   /*
    * Layout: Widgets
    */
+  private Button mBtnReset;
   private Button mBtnLogout;
 
   @NonNull
@@ -63,19 +69,26 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     /*
      * Set the preference manager
      */
-    sPreferences = getApplication().getSharedPreferences(
+    sGlobalPrefs = getApplication().getSharedPreferences(
       PreferenceConstants.PREF_GLOBAL,
+      MODE_PRIVATE
+    );
+
+    sGantryPrefs = getSharedPreferences(
+      PreferenceConstants.PREF_GANTRIES,
       MODE_PRIVATE
     );
 
     /*
      * Set the layout reference
      */
+    mBtnReset = findViewById(R.id.btn_reset);
     mBtnLogout = findViewById(R.id.btn_logout);
 
     /*
      * Set onClick listener override
      */
+    mBtnReset.setOnClickListener(this);
     mBtnLogout.setOnClickListener(this);
 
     /*
@@ -90,30 +103,38 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
   @Override
   public void onClick(View view) {
+    switch (view.getId()) {
+      case R.id.btn_reset:
+        sGantryPrefs.edit().clear().apply();
 
-    /*
-     * Reset the setup completed status
-     */
-    sPreferences.edit().putBoolean(PreferenceConstants.PREF_SETUP_COMPLETED, false).apply();
+        Toast.makeText(this, "Gantry data successfully cleared.", Toast.LENGTH_SHORT).show();
+        break;
+      case R.id.btn_logout:
+        /*
+         * Reset the setup completed status
+         */
+        sGlobalPrefs.edit().putBoolean(PreferenceConstants.PREF_SETUP_COMPLETED, false).apply();
 
-    /*
-     * Sign the current user out of Firebase
-     */
-    FirebaseService.signOut();
+        /*
+         * Sign the current user out of Firebase
+         */
+        FirebaseService.signOut();
 
-    /*
-     * Stops beacon monitoring service
-     */
-    stopService(BeaconService.createIntent(this));
+        /*
+         * Stops beacon monitoring service
+         */
+        stopService(BeaconService.createIntent(this));
 
-    /*
-     * Redirects the activity back to MainActivity
-     */
-    startActivity(MainActivity.createIntent(this));
+        /*
+         * Redirects the activity back to MainActivity
+         */
+        startActivity(MainActivity.createIntent(this));
 
-    /*
-     * Clears all activities
-     */
-    finishAffinity();
+        /*
+         * Clears all activities
+         */
+        finishAffinity();
+        break;
+    }
   }
 }

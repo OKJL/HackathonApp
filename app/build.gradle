@@ -27,11 +27,6 @@ dependencies {
   implementation fileTree(dir: "libs", include: ["*.jar"])
 
   /*
-   * Google Libraries
-   */
-  implementation 'com.google.code.gson:gson:2.8.5'
-
-  /*
    * Kontakt.io Libraries
    */
   implementation 'com.kontaktio:sdk:4.0.3'
