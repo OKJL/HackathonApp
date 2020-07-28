@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 
-package org.ourkidslearningjourney.swtrace;
+package org.ourkidslearningjourney.swtrace.activities;
 
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
@@ -39,10 +39,12 @@ import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.firebase.auth.FirebaseAuth;
 
+import org.ourkidslearningjourney.swtrace.BuildConfig;
+import org.ourkidslearningjourney.swtrace.R;
 import org.ourkidslearningjourney.swtrace.services.BeaconService;
 import org.ourkidslearningjourney.swtrace.services.FirebaseService;
 import org.ourkidslearningjourney.swtrace.services.PermissionService;
-import org.ourkidslearningjourney.swtrace.services.PreferencesService;
+import org.ourkidslearningjourney.swtrace.PreferenceConstants;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -104,7 +106,7 @@ public class MainActivity
      * Set the preference manager
      */
     sSharedPreferences = getApplicationContext().getSharedPreferences(
-      PreferencesService.PREF_GLOBAL,
+      PreferenceConstants.PREF_GLOBAL,
       MODE_PRIVATE
     );
 
@@ -143,7 +145,7 @@ public class MainActivity
     /*
      * Check if the user has completed their setup process
      */
-    if (!sSharedPreferences.getBoolean(PreferencesService.PREF_SETUP_COMPLETED, false)) {
+    if (!sSharedPreferences.getBoolean(PreferenceConstants.PREF_SETUP_COMPLETED, false)) {
       startActivity(SetupActivity.createIntent(this));
       finishAffinity();
       return;
@@ -159,7 +161,7 @@ public class MainActivity
      * Check if Bluetooth is currently turned on
      */
     if (!sBluetoothAdapter.isEnabled()) {
-      startActivity(SetupPermissions.createIntent(this));
+      startActivity(SetupPermissionsActivity.createIntent(this));
       finishAffinity();
       return;
     }
@@ -168,7 +170,7 @@ public class MainActivity
      * Check if all the permissions required are currently enabled
      */
     if (!PermissionService.hasPermissions(this, PermissionService.PERMISSIONS)) {
-      startActivity(SetupPermissions.createIntent(this));
+      startActivity(SetupPermissionsActivity.createIntent(this));
       finishAffinity();
       return;
     }

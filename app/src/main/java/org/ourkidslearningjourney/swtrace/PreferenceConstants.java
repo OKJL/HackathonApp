@@ -20,9 +20,9 @@
  * SOFTWARE.
  */
 
-package org.ourkidslearningjourney.swtrace.services;
+package org.ourkidslearningjourney.swtrace;
 
-public class PreferencesService {
+public class PreferenceConstants {
   /*
    * SharedPreferences: Preference Key Name
    */

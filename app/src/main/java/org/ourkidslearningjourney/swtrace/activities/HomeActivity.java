@@ -20,84 +20,100 @@
  * SOFTWARE.
  */
 
-package org.ourkidslearningjourney.swtrace;
+package org.ourkidslearningjourney.swtrace.activities;
 
-import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
-import org.ourkidslearningjourney.swtrace.services.PermissionService;
+import org.ourkidslearningjourney.swtrace.R;
+import org.ourkidslearningjourney.swtrace.services.BeaconService;
+import org.ourkidslearningjourney.swtrace.services.FirebaseService;
+import org.ourkidslearningjourney.swtrace.PreferenceConstants;
 
-public class SetupPermissions extends AppCompatActivity implements View.OnClickListener {
+public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
+
+  /*
+   * SharedPreferences: Preference Manager
+   */
+  private static SharedPreferences sPreferences;
 
   /*
    * Layout: Widgets
    */
-  private Button mBtnEnableBluetooth;
+  private Button mBtnLogout;
 
   @NonNull
   public static Intent createIntent(@NonNull Context context) {
-    return new Intent(context, SetupPermissions.class);
+    return new Intent(context, HomeActivity.class);
   }
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_setup_permissions);
+    setContentView(R.layout.activity_home);
 
     /*
-     * Set layout reference
+     * Set the preference manager
      */
-    mBtnEnableBluetooth = findViewById(R.id.btn_enable_bluetooth);
+    sPreferences = getApplication().getSharedPreferences(
+      PreferenceConstants.PREF_GLOBAL,
+      MODE_PRIVATE
+    );
+
+    /*
+     * Set the layout reference
+     */
+    mBtnLogout = findViewById(R.id.btn_logout);
 
     /*
      * Set onClick listener override
      */
-    mBtnEnableBluetooth.setOnClickListener(this);
+    mBtnLogout.setOnClickListener(this);
+
+    /*
+     * Check if service is already running
+     *
+     * @bug service will not start upon first installation
+     */
+    if (!BeaconService.isRunning()) {
+      ContextCompat.startForegroundService(this, BeaconService.createIntent(this));
+    }
   }
 
   @Override
   public void onClick(View view) {
-    /*
-     * Request Bluetooth enable
-     */
-    Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-    startActivityForResult(intent, PermissionService.RC_PERMISSIONS);
 
     /*
-     * Request Location Services
+     * Reset the setup completed status
      */
-    ActivityCompat.requestPermissions(
-      this,
-      PermissionService.PERMISSIONS,
-      PermissionService.RC_PERMISSIONS);
+    sPreferences.edit().putBoolean(PreferenceConstants.PREF_SETUP_COMPLETED, false).apply();
+
+    /*
+     * Sign the current user out of Firebase
+     */
+    FirebaseService.signOut();
+
+    /*
+     * Stops beacon monitoring service
+     */
+    stopService(BeaconService.createIntent(this));
+
+    /*
+     * Redirects the activity back to MainActivity
+     */
+    startActivity(MainActivity.createIntent(this));
+
+    /*
+     * Clears all activities
+     */
+    finishAffinity();
   }
-
-  @Override
-  protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-    super.onActivityResult(requestCode, resultCode, data);
-
-    /*
-     * Check if the requestCode matches and if the resultCode is OK
-     */
-    if (requestCode == PermissionService.RC_PERMISSIONS && resultCode == RESULT_OK) {
-
-      /*
-       * Check if all the permissions are granted
-       */
-      if (PermissionService.hasPermissions(this, PermissionService.PERMISSIONS)) {
-        startActivity(HomeActivity.createIntent(this));
-        finishAffinity();
-      }
-    }
-  }
-
 }

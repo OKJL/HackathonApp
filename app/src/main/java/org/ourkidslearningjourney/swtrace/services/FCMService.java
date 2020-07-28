@@ -39,6 +39,7 @@ import com.google.firebase.messaging.RemoteMessage;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.ourkidslearningjourney.swtrace.PreferenceConstants;
 
 public class FCMService extends FirebaseMessagingService {
 
@@ -67,8 +68,8 @@ public class FCMService extends FirebaseMessagingService {
   @Nullable
   public static String getFCMToken(@NotNull Context context) {
     return context
-      .getSharedPreferences(PreferencesService.PREF_GLOBAL, MODE_PRIVATE)
-      .getString(PreferencesService.PREF_FCM_TOKEN, null);
+      .getSharedPreferences(PreferenceConstants.PREF_GLOBAL, MODE_PRIVATE)
+      .getString(PreferenceConstants.PREF_FCM_TOKEN, null);
   }
 
   /*
@@ -85,9 +86,9 @@ public class FCMService extends FirebaseMessagingService {
           Log.i(TAG, "Retrieved FCM Token: " + task.getResult().getToken());
 
           context
-            .getSharedPreferences(PreferencesService.PREF_GLOBAL, MODE_PRIVATE)
+            .getSharedPreferences(PreferenceConstants.PREF_GLOBAL, MODE_PRIVATE)
             .edit()
-            .putString(PreferencesService.PREF_FCM_TOKEN, task.getResult().getToken())
+            .putString(PreferenceConstants.PREF_FCM_TOKEN, task.getResult().getToken())
             .apply();
         }
       })
@@ -109,11 +110,11 @@ public class FCMService extends FirebaseMessagingService {
 
     getApplicationContext()
       .getSharedPreferences(
-        PreferencesService.PREF_GLOBAL,
+        PreferenceConstants.PREF_GLOBAL,
         MODE_PRIVATE
       )
       .edit()
-      .putString(PreferencesService.PREF_FCM_TOKEN, token)
+      .putString(PreferenceConstants.PREF_FCM_TOKEN, token)
       .apply();
   }
 

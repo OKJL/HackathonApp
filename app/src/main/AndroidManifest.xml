@@ -29,19 +29,19 @@
 
     <!-- Activities -->
     <activity
-      android:name=".HomeActivity"
+      android:name=".activities.HomeActivity"
       android:screenOrientation="portrait" />
     <activity
-      android:name=".SetupPermissions"
+      android:name=".activities.SetupPermissionsActivity"
       android:screenOrientation="portrait" />
     <activity
-      android:name=".SetupActivity"
+      android:name=".activities.SetupActivity"
       android:screenOrientation="portrait" />
     <activity
-      android:name=".NoBluetoothActivity"
+      android:name=".activities.NoBluetoothActivity"
       android:screenOrientation="portrait" />
     <activity
-      android:name=".MainActivity"
+      android:name=".activities.MainActivity"
       android:screenOrientation="portrait">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />

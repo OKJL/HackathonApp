@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 
-package org.ourkidslearningjourney.swtrace;
+package org.ourkidslearningjourney.swtrace.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -43,10 +43,11 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.FieldValue;
 
+import org.ourkidslearningjourney.swtrace.R;
 import org.ourkidslearningjourney.swtrace.models.User;
 import org.ourkidslearningjourney.swtrace.services.FCMService;
 import org.ourkidslearningjourney.swtrace.services.FirebaseService;
-import org.ourkidslearningjourney.swtrace.services.PreferencesService;
+import org.ourkidslearningjourney.swtrace.PreferenceConstants;
 
 import java.util.Arrays;
 
@@ -94,7 +95,7 @@ public class SetupActivity extends AppCompatActivity implements View.OnClickList
      * Set the preference manager
      */
     sPreferences = getApplicationContext().getSharedPreferences(
-      PreferencesService.PREF_GLOBAL,
+      PreferenceConstants.PREF_GLOBAL,
       MODE_PRIVATE
     );
 
@@ -247,7 +248,7 @@ public class SetupActivity extends AppCompatActivity implements View.OnClickList
       .addOnSuccessListener(new OnSuccessListener<Void>() {
         @Override
         public void onSuccess(Void aVoid) {
-          sPreferences.edit().putBoolean(PreferencesService.PREF_SETUP_COMPLETED, true).apply();
+          sPreferences.edit().putBoolean(PreferenceConstants.PREF_SETUP_COMPLETED, true).apply();
 
           startActivity(MainActivity.createIntent(getApplicationContext()));
           finishAffinity();

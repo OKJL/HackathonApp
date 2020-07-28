@@ -36,15 +36,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FieldValue;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.ServerTimestamp;
 import com.google.gson.Gson;
 import com.kontakt.sdk.android.ble.configuration.ScanMode;
 import com.kontakt.sdk.android.ble.configuration.ScanPeriod;
@@ -59,13 +53,12 @@ import com.kontakt.sdk.android.common.profile.IEddystoneDevice;
 import com.kontakt.sdk.android.common.profile.IEddystoneNamespace;
 
 import org.jetbrains.annotations.NotNull;
+import org.ourkidslearningjourney.swtrace.PreferenceConstants;
 import org.ourkidslearningjourney.swtrace.R;
 import org.ourkidslearningjourney.swtrace.SWTrace;
 import org.ourkidslearningjourney.swtrace.models.Entry;
 
-import java.time.Duration;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 public class BeaconService extends Service implements EddystoneListener, OnServiceReadyListener, ScanStatusListener {
@@ -92,7 +85,7 @@ public class BeaconService extends Service implements EddystoneListener, OnServi
 
     sGson = new Gson();
 
-    sSharedPreferences = getSharedPreferences(PreferencesService.PREF_GLOBAL, MODE_PRIVATE);
+    sSharedPreferences = getSharedPreferences(PreferenceConstants.PREF_GLOBAL, MODE_PRIVATE);
 
     sProximityManager = ProximityManagerFactory.create(this);
     sProximityManager.setEddystoneListener(this);

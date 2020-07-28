@@ -1,4 +1,4 @@
-package org.ourkidslearningjourney.swtrace;
+package org.ourkidslearningjourney.swtrace.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+
+import org.ourkidslearningjourney.swtrace.R;
 
 public class NoBluetoothActivity extends AppCompatActivity implements View.OnClickListener {
 
