@@ -32,6 +32,7 @@ import com.google.firebase.firestore.ServerTimestamp;
 import com.google.firebase.firestore.SetOptions;
 
 import org.jetbrains.annotations.NotNull;
+import org.w3c.dom.Document;
 
 import java.util.Date;
 import java.util.Map;
@@ -44,9 +45,6 @@ public class FirebaseService {
    * Logcat: Logging Tag
    */
   private static final String TAG = "FirebaseService";
-
-  @ServerTimestamp
-  private static Date serverTimestamp;
 
   /*
    * Firebase: Authentication Instance
@@ -103,6 +101,12 @@ public class FirebaseService {
   @NotNull
   public static CollectionReference getUsersCollection() {
     return sDb.collection("users");
+  }
+
+  @NotNull
+  public static DocumentReference getBeaconReference(String instance) {
+    return sDb.collection("entries")
+      .document(instance);
   }
 
   /*

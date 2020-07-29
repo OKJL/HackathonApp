@@ -36,8 +36,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.kontakt.sdk.android.ble.configuration.ScanMode;
 import com.kontakt.sdk.android.ble.configuration.ScanPeriod;
@@ -67,6 +69,7 @@ public class BeaconService extends Service implements EddystoneListener, OnServi
   private static boolean isRunning;
   private static ProximityManager sProximityManager;
   private static SharedPreferences sSharedPreferences;
+  private static SharedPreferences sGantryPreferences;
 
   public static boolean isRunning() {
     return isRunning;
@@ -82,6 +85,7 @@ public class BeaconService extends Service implements EddystoneListener, OnServi
     super.onCreate();
 
     sSharedPreferences = getSharedPreferences(PreferenceConstants.PREF_GLOBAL, MODE_PRIVATE);
+    sGantryPreferences = getSharedPreferences(PreferenceConstants.PREF_GANTRIES, MODE_PRIVATE);
 
     sProximityManager = ProximityManagerFactory.create(this);
     sProximityManager.setEddystoneListener(this);
@@ -170,27 +174,58 @@ public class BeaconService extends Service implements EddystoneListener, OnServi
 
   @Override
   public void onEddystoneDiscovered(@NotNull final IEddystoneDevice eddystone, final IEddystoneNamespace namespace) {
+    final String instanceId = eddystone.getInstanceId();
+
     Log.i(TAG, "Eddystone Discovered: " + eddystone.toString());
 
-    Entry entry = new Entry();
-    entry.put(Entry.FCM_TOKEN, FCMService.getFCMToken(this));
-    entry.put(Entry.BEACON_ID, eddystone.getInstanceId());
-    entry.put(Entry.ENTERED_TIMESTAMP, FirebaseService.getServerTimestamp());
-    entry.put(Entry.EXITED_TIMESTAMP, FirebaseService.getServerTimestamp(FirebaseService.ONE_HOUR));
+    if (instanceId.substring(10, 12).equals("01")) {
+      Entry entry = new Entry();
+      entry.put(Entry.FCM_TOKEN, FCMService.getFCMToken(this));
+      entry.put(Entry.BEACON_ID, FirebaseService.getBeaconReference(instanceId));
+      entry.put(Entry.ENTERED_TIMESTAMP, FirebaseService.getServerTimestamp());
+      entry.put(Entry.EXITED_TIMESTAMP, FirebaseService.getServerTimestamp(FirebaseService.ONE_HOUR));
 
-    FirebaseService.setEntriesCollection(entry)
-      .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-        @Override
-        public void onSuccess(DocumentReference ref) {
-          onDeviceDiscovered(eddystone, namespace, 1);
-        }
-      })
-      .addOnFailureListener(new OnFailureListener() {
-        @Override
-        public void onFailure(@NonNull Exception e) {
-          onDeviceDiscovered(eddystone, namespace, -1);
-        }
-      });
+      FirebaseService.setEntriesCollection(entry)
+        .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+          @Override
+          public void onComplete(@NonNull Task<DocumentReference> task) {
+            if (!task.isSuccessful()) {
+              onDeviceDiscovered(eddystone, namespace, -1);
+            }
+
+            onDeviceDiscovered(eddystone, namespace, 1);
+
+            sGantryPreferences.edit().putString(instanceId, task.getResult().getId()).apply();
+          }
+        });
+
+      return;
+    }
+
+    String docId = sGantryPreferences.getString(instanceId, null);
+
+    if (docId != null) {
+      Entry entry = new Entry();
+      entry.put(Entry.EXITED_TIMESTAMP, FirebaseService.getServerTimestamp());
+
+      FirebaseService.setEntriesCollection(docId, entry)
+        .addOnSuccessListener(new OnSuccessListener<Void>() {
+          @Override
+          public void onSuccess(Void aVoid) {
+            sGantryPreferences.edit().remove(instanceId).apply();
+          }
+        })
+        .addOnFailureListener(new OnFailureListener() {
+          @Override
+          public void onFailure(@NonNull Exception e) {
+            onDeviceDiscovered(eddystone, namespace, -1);
+          }
+        });
+
+      return;
+    }
+
+    onDeviceDiscovered(eddystone, namespace, -1);
   }
 
   @Override
