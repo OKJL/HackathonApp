@@ -68,7 +68,6 @@ public class BeaconService extends Service implements EddystoneListener, OnServi
 
   private static boolean isRunning;
   private static ProximityManager sProximityManager;
-  private static SharedPreferences sSharedPreferences;
   private static SharedPreferences sGantryPreferences;
 
   public static boolean isRunning() {
@@ -84,7 +83,6 @@ public class BeaconService extends Service implements EddystoneListener, OnServi
   public void onCreate() {
     super.onCreate();
 
-    sSharedPreferences = getSharedPreferences(PreferenceConstants.PREF_GLOBAL, MODE_PRIVATE);
     sGantryPreferences = getSharedPreferences(PreferenceConstants.PREF_GANTRIES, MODE_PRIVATE);
 
     sProximityManager = ProximityManagerFactory.create(this);
@@ -212,6 +210,8 @@ public class BeaconService extends Service implements EddystoneListener, OnServi
         .addOnSuccessListener(new OnSuccessListener<Void>() {
           @Override
           public void onSuccess(Void aVoid) {
+            onDeviceDiscovered(eddystone, namespace, 0);
+
             sGantryPreferences.edit().remove(instanceId).apply();
           }
         })
