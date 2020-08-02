@@ -30,7 +30,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.IBinder;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -62,18 +61,54 @@ import org.ourkidslearningjourney.swtrace.models.Entry;
 import java.util.Collections;
 import java.util.List;
 
-public class BeaconService extends Service implements EddystoneListener, OnServiceReadyListener, ScanStatusListener {
+public class BeaconService extends Service
+  implements EddystoneListener, OnServiceReadyListener, ScanStatusListener {
 
+  /**
+   * Tag used for logging in logcat.
+   */
   private static final String TAG = "BeaconService";
 
+  /**
+   * Represents the entrance code for beacons.
+   */
+  private static final String BEACON_ENTR = "01";
+
+  /**
+   * Represents the exit code for beacons.
+   */
+  private static final String BEACON_EXIT = "02";
+
+  /**
+   * Represents the current status of the foreground service.
+   */
   private static boolean isRunning;
+
+  /**
+   * Represents Kontakt.io's Eddystone scanning manager.
+   */
   private static ProximityManager sProximityManager;
+
+  /**
+   * The tracking system for maintaining current locations.
+   */
   private static SharedPreferences sGantryPreferences;
 
+  /**
+   * Checks if the service is currently running.
+   *
+   * @return status of the service.
+   */
   public static boolean isRunning() {
     return isRunning;
   }
 
+  /**
+   * Creates a new intent for starting the foreground service.
+   *
+   * @param context the caller's context
+   * @return the intent to start the foreground service.
+   */
   @NonNull
   public static Intent createIntent(@NonNull Context context) {
     return new Intent(context, BeaconService.class);
@@ -83,7 +118,10 @@ public class BeaconService extends Service implements EddystoneListener, OnServi
   public void onCreate() {
     super.onCreate();
 
-    sGantryPreferences = getSharedPreferences(PreferenceConstants.PREF_GANTRIES, MODE_PRIVATE);
+    sGantryPreferences = getApplicationContext().getSharedPreferences(
+      PreferenceConstants.PREF_GANTRIES,
+      MODE_PRIVATE
+    );
 
     sProximityManager = ProximityManagerFactory.create(this);
     sProximityManager.setEddystoneListener(this);
@@ -114,12 +152,14 @@ public class BeaconService extends Service implements EddystoneListener, OnServi
     );
     Notification notification = new NotificationCompat.Builder(this, SWTrace.CHANNEL_ID)
       .setContentTitle("Gantry Monitoring Active")
-      .setContentText("This is to inform you that your app is working as intended")
+      .setContentText("Your app is working as intended.")
       .setSmallIcon(R.mipmap.ic_launcher)
       .setContentIntent(pIntent)
       .build();
 
     startForeground(1, notification);
+
+    Log.i(TAG, "onStartCommand: Foreground Service Started");
 
     sProximityManager.connect(this);
 
@@ -141,18 +181,14 @@ public class BeaconService extends Service implements EddystoneListener, OnServi
   public void onScanStart() {
     isRunning = true;
 
-    Toast.makeText(this, "Scanning Started", Toast.LENGTH_SHORT).show();
-
-    Log.i(TAG, "Scanning Started");
+    Log.i(TAG, "onScanStart: Scanning Started");
   }
 
   @Override
   public void onScanStop() {
     isRunning = false;
 
-    Toast.makeText(this, "Scanning Stopped", Toast.LENGTH_SHORT).show();
-
-    Log.i(TAG, "Scanning Stopped");
+    Log.i(TAG, "onScanStop: Scanning Stopped");
   }
 
   @Override
@@ -171,12 +207,17 @@ public class BeaconService extends Service implements EddystoneListener, OnServi
   }
 
   @Override
-  public void onEddystoneDiscovered(@NotNull final IEddystoneDevice eddystone, final IEddystoneNamespace namespace) {
+  public void onEddystoneDiscovered(
+    @NotNull final IEddystoneDevice eddystone,
+    final IEddystoneNamespace namespace
+  ) {
     final String instanceId = eddystone.getInstanceId();
+    final String locationCode = instanceId.substring(0, 11);
+    final String directionCode = instanceId.substring(10, 12);
 
-    Log.i(TAG, "Eddystone Discovered: " + eddystone.toString());
+    Log.i(TAG, "onEddystoneDiscovered: " + eddystone.toString());
 
-    if (instanceId.substring(10, 12).equals("01")) {
+    if (directionCode.equals(BEACON_ENTR)) {
       Entry entry = new Entry();
       entry.put(Entry.FCM_TOKEN, FCMService.getFCMToken(this));
       entry.put(Entry.BEACON_ID, FirebaseService.getBeaconReference(instanceId));
@@ -189,9 +230,13 @@ public class BeaconService extends Service implements EddystoneListener, OnServi
           public void onComplete(@NonNull Task<DocumentReference> task) {
             if (!task.isSuccessful()) {
               onDeviceDiscovered(eddystone, namespace, -1);
+
+              Log.e(TAG, "onComplete: Failed to create entry document");
             }
 
             onDeviceDiscovered(eddystone, namespace, 1);
+
+            Log.i(TAG, "onComplete: Successfully created entry document");
 
             sGantryPreferences.edit().putString(instanceId, task.getResult().getId()).apply();
           }
@@ -200,7 +245,7 @@ public class BeaconService extends Service implements EddystoneListener, OnServi
       return;
     }
 
-    String docId = sGantryPreferences.getString(instanceId, null);
+    String docId = sGantryPreferences.getString(instanceId.substring(0, 11) + "1", null);
 
     if (docId != null) {
       Entry entry = new Entry();
@@ -212,6 +257,8 @@ public class BeaconService extends Service implements EddystoneListener, OnServi
           public void onSuccess(Void aVoid) {
             onDeviceDiscovered(eddystone, namespace, 0);
 
+            Log.i(TAG, "Document Update Success.");
+
             sGantryPreferences.edit().remove(instanceId).apply();
           }
         })
@@ -219,10 +266,10 @@ public class BeaconService extends Service implements EddystoneListener, OnServi
           @Override
           public void onFailure(@NonNull Exception e) {
             onDeviceDiscovered(eddystone, namespace, -1);
+
+            Log.i(TAG, "Document Update Failed.");
           }
         });
-
-      return;
     }
 
     onDeviceDiscovered(eddystone, namespace, -1);
