@@ -36,8 +36,6 @@ import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.kontakt.sdk.android.ble.configuration.ScanMode;
@@ -59,6 +57,7 @@ import org.ourkidslearningjourney.swtrace.SWTrace;
 import org.ourkidslearningjourney.swtrace.models.Entry;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 public class BeaconService extends Service
@@ -231,43 +230,63 @@ public class BeaconService extends Service
             if (!task.isSuccessful()) {
               onDeviceDiscovered(eddystone, namespace, -1);
 
-              Log.e(TAG, "onComplete: Failed to create entry document");
+              Log.e(TAG, "Document Transaction Start");
+              Log.e(TAG, "> Document ID: " + task.getResult().getId());
+              Log.e(TAG, "> Document Status: Failure");
+              Log.e(TAG, "> Operation Timestamp: " + new Date().toString());
+              Log.e(TAG, "> Exception Message: ", task.getException());
+              Log.e(TAG, "Document Transaction End");
+
+              return;
             }
 
             onDeviceDiscovered(eddystone, namespace, 1);
 
-            Log.i(TAG, "onComplete: Successfully created entry document");
+            Log.i(TAG, "Document Transaction Start");
+            Log.i(TAG, "> Document ID: " + task.getResult().getId());
+            Log.i(TAG, "> Document Status: Successful");
+            Log.i(TAG, "> Operation Timestamp: " + new Date().toString());
+            Log.i(TAG, "Document Transaction End");
 
-            sGantryPreferences.edit().putString(instanceId, task.getResult().getId()).apply();
+            sGantryPreferences.edit().putString(locationCode, task.getResult().getId()).apply();
           }
         });
 
       return;
     }
 
-    String docId = sGantryPreferences.getString(instanceId.substring(0, 11) + "1", null);
+    final String entryId = sGantryPreferences.getString(locationCode, null);
 
-    if (docId != null) {
+    if (entryId != null) {
       Entry entry = new Entry();
       entry.put(Entry.EXITED_TIMESTAMP, FirebaseService.getServerTimestamp());
 
-      FirebaseService.setEntriesCollection(docId, entry)
-        .addOnSuccessListener(new OnSuccessListener<Void>() {
+      FirebaseService.setEntriesCollection(entryId, entry)
+        .addOnCompleteListener(new OnCompleteListener<Void>() {
           @Override
-          public void onSuccess(Void aVoid) {
+          public void onComplete(@NonNull Task<Void> task) {
+            if (!task.isSuccessful()) {
+              onDeviceDiscovered(eddystone, namespace, -1);
+
+              Log.e(TAG, "Document Transaction Start");
+              Log.e(TAG, "> Document ID: " + entryId);
+              Log.e(TAG, "> Document Status: Failure");
+              Log.e(TAG, "> Operation Timestamp: " + new Date().toString());
+              Log.e(TAG, "> Exception Message: ", task.getException());
+              Log.e(TAG, "Document Transaction End");
+
+              return;
+            }
+
             onDeviceDiscovered(eddystone, namespace, 0);
 
-            Log.i(TAG, "Document Update Success.");
+            Log.i(TAG, "Document Transaction Start");
+            Log.i(TAG, "> Document ID: " + entryId);
+            Log.i(TAG, "> Document Status: Success");
+            Log.i(TAG, "> Operation Timestamp: " + new Date().toString());
+            Log.i(TAG, "Document Transaction End");
 
-            sGantryPreferences.edit().remove(instanceId).apply();
-          }
-        })
-        .addOnFailureListener(new OnFailureListener() {
-          @Override
-          public void onFailure(@NonNull Exception e) {
-            onDeviceDiscovered(eddystone, namespace, -1);
-
-            Log.i(TAG, "Document Update Failed.");
+            sGantryPreferences.edit().remove(locationCode).apply();
           }
         });
     }
@@ -282,9 +301,9 @@ public class BeaconService extends Service
 
   @Override
   public void onEddystoneLost(@NotNull IEddystoneDevice eddystone, IEddystoneNamespace namespace) {
-    Log.i(TAG, "Eddystone Lost: " + eddystone.toString());
-
     onDeviceDiscovered(eddystone, namespace, 0);
+
+    Log.i(TAG, "onEddystoneLost: " + eddystone.toString());
 
     sProximityManager.restartScanning();
   }
